@@ -31,8 +31,8 @@ export function TrackPage() {
     <p>
       {trackData && trackData.status === 200 && "by"} 
       {trackData && trackData.status === 200
-        && trackData.artists.map((artist) => {
-        return (<ArtistLink id={artist.id} name={artist.name} />)
+        && trackData.artists.map((artist, index) => {
+        return (<ArtistLink id={artist.id} name={artist.name} key={index} />)
         })}
     </p>
     </>

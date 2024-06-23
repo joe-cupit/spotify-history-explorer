@@ -7,15 +7,20 @@ require('dotenv').config();
 
 // Server setup
 
-const express = require("express");
+const express = require('express');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 
-// API exports
+// Database connection
 
-require("./api/spotify")(app);
-require("./api/database")(app);
+const connectToMongoDB = require('./database/connect');
+connectToMongoDB();
+
+
+// API routes
+
+app.use('/api', require('./routes/router'));
 
 
 // Begin server

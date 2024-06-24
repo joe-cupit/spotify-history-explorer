@@ -1,5 +1,5 @@
-const artistSchema = require('../database/models/artistSchema')
-const trackSchema = require('../database/models/trackSchema')
+const artistSchema = require('../../models/artistSchema')
+const trackSchema = require('../../models/trackSchema')
 
 
 exports.test = async (req, res) => {
@@ -18,7 +18,7 @@ exports.test = async (req, res) => {
     })
     .catch(err => {
       console.log('[MongoDB] Error adding to database');
-      console.log(err);
+      console.log('[MongoDB]', err);
       res.send(err);
     });
 

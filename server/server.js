@@ -1,8 +1,5 @@
-// https://www.freecodecamp.org/news/how-to-create-a-react-app-with-a-node-backend-the-complete-guide/
-
-// Modules
-
 require('dotenv').config();
+const mongoose = require('mongoose');
 
 
 // Server setup
@@ -14,8 +11,14 @@ const app = express();
 
 // Database connection
 
-const connectToMongoDB = require('./database/connect');
+const connectToMongoDB = require('./controllers/database/connect');
 connectToMongoDB();
+
+
+// Spotify API
+
+const connectToSpotifyApi = require('./controllers/spotify/connect');
+const spotifyApi = connectToSpotifyApi();
 
 
 // API routes
@@ -27,5 +30,18 @@ app.use('/api', require('./routes/router'));
 
 app.listen(PORT, () => {
   console.log('[Server] Server started');
-  console.log(`[Server] Server listening on ${PORT}`);
+  console.log(`[Server] Listening on ${PORT}`);
+});
+
+
+// Closing server
+
+process.on('SIGINT', async () => {
+  console.log('[Server] Keyboard interrupt');
+
+  await mongoose.connection.close()
+    .then(console.log('[MongoDB] Connection closed'));
+
+  console.log('[Server] Shutting down');
+  process.exit();
 });

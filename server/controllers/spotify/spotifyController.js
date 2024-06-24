@@ -1,4 +1,4 @@
-var SpotifyWebApi = require("spotify-web-api-node");
+var SpotifyWebApi = require('spotify-web-api-node');
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.CLIENT_ID,

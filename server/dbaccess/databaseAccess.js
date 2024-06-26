@@ -19,12 +19,17 @@ findOneAndUpdate = async function(model, json, update) {
 
 
 exports.addOrUpdateTrack = async function(trackJson, updateJson) {
-  findOneAndUpdate(models.Track, trackJson, updateJson);
+  await findOneAndUpdate(models.Track, trackJson, updateJson);
 }
 
 
 exports.addOrUpdateArtist = async function(artistJson, updateJson) {
-  findOneAndUpdate(models.Artist, artistJson, updateJson);
+  await findOneAndUpdate(models.Artist, artistJson, updateJson);
+}
+
+
+exports.addOrUpdateAlbum = async function(albumJson, updateJson) {
+  await findOneAndUpdate(models.Album, albumJson, updateJson);
 }
 
 
@@ -49,17 +54,17 @@ exports.addHistoryEntry = async function(historyJson) {
 }
 
 
-exports.getArtistsFromTrackIfExists = async function(trackId) {
-  artistList = null;
+exports.getArtistsAndAlbumFromTrackIfExists = async function(trackId) {
+  var artistList = null;
+  var albumId = null;
   try {
-    const response = await models.Track.findOne(
-                    { spotifyId: trackId }, 'artists')
-                    .exec();
-    artistList = response['artists'];
+    const track = await models.Track.findOne({ spotifyId: trackId }, 'artists albumId')
+    artistList = track.artists;
+    albumId = track.albumId;
   } catch (err) {
     artistList = null;
   }
 
-  return artistList;
+  return [ artistList, albumId ];
 }
 

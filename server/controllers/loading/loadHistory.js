@@ -11,7 +11,7 @@ async function addArtistsToDatabase(artists, updateJson) {
     var artistJson = {
       spotifyId: spotifyArtistData.id,
       name: spotifyArtistData.name,
-      // imageURL: spotifyArtistData.images[0],
+      // imageURL: spotifyArtistData.images[0].src,
       // followers: spotifyArtistData.followers,
       // popularity: spotifyArtistData.popularity
     }
@@ -21,6 +21,22 @@ async function addArtistsToDatabase(artists, updateJson) {
   }
 
   return idList;
+}
+
+
+async function addAlbumToDatabase(spotifyAlbumData, updateJson) {
+  var albumJson = {
+    spotifyId: spotifyAlbumData.id,
+    name: spotifyAlbumData.name,
+    artists: spotifyAlbumData.artists.map(a => a.id),
+
+    imageURL: spotifyAlbumData.images[0].url,
+    albumType: spotifyAlbumData.album_type,
+    totalTracks: spotifyAlbumData.total_tracks,
+    releaseDate: spotifyAlbumData.release_date,
+  }
+
+  await databaseController.addOrUpdateAlbum(albumJson, updateJson);
 }
 
 
@@ -57,13 +73,15 @@ async function addTrackToDatabase(trackEntry) {
     spotifyId: trackId
   }
 
-  var artistList = await databaseController.getArtistsFromTrackIfExists(trackId);
+  var [ artistList, albumId ] = await databaseController.getArtistsAndAlbumFromTrackIfExists(trackId);
 
-  if (artistList) {
+  if (artistList && albumId) {
     console.log('[MongoDB] Track info found in database');
     for (var artistId of artistList) {
       await databaseController.addOrUpdateArtist({ spotifyId: artistId }, updateJson);
     }
+
+    await databaseController.addOrUpdateAlbum({ spotifyId: albumId }, updateJson);
   }
   else {
     await spotifyController.callPermission();
@@ -79,6 +97,8 @@ async function addTrackToDatabase(trackEntry) {
       trackJson.duration = spotifyTrackData.duration_ms;
       trackJson.releaseDate = spotifyTrackData.album.release_date;
       trackJson.popularity = spotifyTrackData.popularity;
+
+      await addAlbumToDatabase(spotifyTrackData.album, updateJson);
     }
   }
 

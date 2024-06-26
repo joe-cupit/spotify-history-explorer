@@ -1,3 +1,4 @@
+require('dotenv').config();
 const SpotifyWebApi = require('spotify-web-api-node');
 
 var spotifyApi = null;
@@ -31,8 +32,8 @@ validateConnection = async function() {
 getAccessToken = async function() {
   try {
     response = await spotifyApi.clientCredentialsGrant();
-    console.log(`[Spotify] New access token is ${data.body['access_token']}`);
-    spotifyApi.setAccessToken(data.body['access_token']);
+    console.log(`[Spotify] New access token is ${response.body['access_token']}`);
+    spotifyApi.setAccessToken(response.body['access_token']);
   } catch (err) {
     console.log('[Spotify] Failed to retrieve new access token');
     console.log('[Spotify]', err);
@@ -40,6 +41,9 @@ getAccessToken = async function() {
   }
 }
 
+
+// connectToSpotifyApi()
+// getAccessToken()
 
 
 // Spotify API limits the number of calls that can be made

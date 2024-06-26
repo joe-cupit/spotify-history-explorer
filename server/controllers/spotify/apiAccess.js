@@ -48,11 +48,11 @@ processError = function(err) {
       console.log('[Spotify] Error 429: Too many requests');
       const retryIn = err.body.headers['retry-after'];
       console.log(`[Spotify] Retry again in ${retryIn}`)
-      spotifyController.setRetryAgain(retryIn);
+      spotifyController.setRetryIn(retryIn);
       break;
     case 502:
       console.log('[Spotify] Error 502: Bad gateway');
-      // retry again
+      // TODO: retry again
       break;
     default:
       console.log('[Spotify] Encountered an error');

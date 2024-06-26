@@ -28,3 +28,12 @@ exports.setRetryAgain = function(retryIn) {
 exports.getApiCallsExceedsLimit = function() {
   return (apiCallWindowSize >= MAX_API_CALLS);
 }
+
+
+exports.callPermission = async function() {
+  while(apiCallWindowSize >= MAX_API_CALLS) {
+    console.log(`[Spotify] Too many API calls in the past 30s
+                  (${apiCallWindowSize})`);
+    await sleep(5000);
+  }
+}

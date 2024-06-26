@@ -6,6 +6,8 @@ const historySchema = mongoose.Schema({
   // track id and name
   trackId: types.Required(String),
   name: String,
+  artistName: String,
+  albumName: String,
 
   // track: trackSchema,   // track entry in database
 

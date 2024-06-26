@@ -28,6 +28,17 @@ exports.addOrUpdateArtist = async function(artistJson, updateJson) {
 }
 
 
+exports.addHistoryEntry = async function(historyJson) {
+  try {
+    newEntry = new models.History(historyJson);
+    await newEntry.save();
+  } catch (err) {
+    console.log(`[MongoDB] Error adding history entry to database`);
+    console.log('[MongoDB]', err);
+  }
+}
+
+
 exports.getArtistsFromTrackIfExists = async function(trackId) {
   artistList = null;
   try {

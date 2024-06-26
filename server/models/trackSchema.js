@@ -1,31 +1,34 @@
 const mongoose = require('mongoose');
+const types = require('./schemaTypes');
+
 
 const trackSchema = mongoose.Schema({
-  spotifyId: String,            // spotify id for the track
-  name: String,                 // name of the track
-  albumName: String,
-  artists: [String],            // list of spotify ids for track artists
+  // track id and name
+  spotifyId: types.Required(String),
+  name: String,
 
-  duration: Number,
 
-  totalListeningCount:  {
-    type: Number,
-    default: 0
-  },
-  totalListeningTime:  {        // total time listened to track in ms
-    type: Number,
-     default: 0
-  },
-  skippedCount: {
-    type: Number,
-    default: 0
-  },
+  // meta data
+  artists: [String],     // list of artist spotify ids
+  albumId: String,       // album spotify id
+
+  imageURL: String,      // url for album cover
+  duration: Number,      // duration of song (ms)
+  releaseDate: String,   // date of track release
+  popularity: Number,    // track popularity (0-100)
+
+
+  // historical data
+  totalListeningCount: types.DefaultNumber,  // number of time listened
+  totalListeningTime: types.DefaultNumber,   // total time listened (ms)
+  skippedCount: types.DefaultNumber,         // number of time skipped
   
-/*   firstListenedDate: Date,      // date of first song listened by track
-  firstListenedSongId: String,  // spotify id of first song listened by track
+  firstListenedDate: Date,        // first time album was listened to
+  firstListenedTrackId: String,   // spotify id of first track
 
-  lastListenedDate: Date,       // date of latest song listened by track
-  lastListenedSongId: String,   // spotify id of latest song listened by track */
+  latestListenedDate: Date,       // most recent time album was listened to
+  latestListenedTrackId: String,  // spotify id of recent track
 })
+
 
 module.exports = mongoose.model('tracks', trackSchema);

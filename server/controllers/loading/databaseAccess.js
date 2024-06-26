@@ -1,5 +1,4 @@
-const Track = require('../../models/trackSchema')
-const Artist = require('../../models/artistSchema')
+const models = require('../../models/models')
 
 
 findOneAndUpdate = async function(model, json, update) {
@@ -20,19 +19,19 @@ findOneAndUpdate = async function(model, json, update) {
 
 
 exports.addOrUpdateTrack = async function(trackJson, updateJson) {
-  findOneAndUpdate(Track, trackJson, updateJson);
+  findOneAndUpdate(models.Track, trackJson, updateJson);
 }
 
 
 exports.addOrUpdateArtist = async function(artistJson, updateJson) {
-  findOneAndUpdate(Artist, artistJson, updateJson);
+  findOneAndUpdate(models.Artist, artistJson, updateJson);
 }
 
 
 exports.getArtistsFromTrackIfExists = async function(trackId) {
   artistList = null;
   try {
-    const response = await Track.findOne(
+    const response = await models.Track.findOne(
                     { spotifyId: trackId }, 'artists')
                     .exec();
     artistList = response['artists'];

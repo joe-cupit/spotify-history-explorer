@@ -28,7 +28,6 @@ async function addTrackToDatabase(track) {
 
   if (!artistList) {
     trackJson.name = track.master_metadata_track_name;
-    trackJson.albumName = track.master_metadata_album_album_name;
 
     while(trackApiCalls.getApiCallsExceedsLimit()) {
       console.log(`[Spotify] Too many API calls in the past 30s
@@ -50,6 +49,7 @@ async function addTrackToDatabase(track) {
       }
 
       trackJson.artists = artistList;
+      trackJson.albumId = trackData.album.id;
       trackJson.duration = trackData.duration_ms;
     } else {
       console.log('[Spotify] Nothing returned, exiting...');

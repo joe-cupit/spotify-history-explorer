@@ -1,20 +1,23 @@
 const mongoose = require('mongoose');
+const types = require('./schemaTypes');
+
 
 const historySchema = mongoose.Schema({
-  trackId: String,       // spotify id for the track
-  name: String,          // name of the track
+  // track id and name
+  trackId: types.Required(String),
+  name: String,
 
-  albumId: String,       // spotify id for the album
-  albumName: String,     // name of the album
+  // track: trackSchema,   // track entry in database
 
-  artists: [String],     // list of spotify ids for track artists
 
-  listenedOn: Date,      // date of first song listened by track
-  listenedFor: Number,   // time played in ms
+  // historical data
+  listenedOn: types.Required(Date),      // date and time of listen
+  listenedFor: types.Required(Number),   // time played in ms
 
-  skipped: Boolean,      // true if track was skipped
-  shuffle: Boolean,      // true if shuffle was on while listening
-  offline: Boolean,      // true if it was listened to offline
+  skipped: types.DefaultBoolean,  // true if track was skipped
+  shuffle: types.DefaultBoolean,  // true if shuffle was on while listening
+  offline: types.DefaultBoolean,  // true if it was listened to offline
 })
+
 
 module.exports = mongoose.model('history', historySchema);

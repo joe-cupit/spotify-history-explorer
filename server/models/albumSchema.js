@@ -2,16 +2,19 @@ const mongoose = require('mongoose');
 const types = require('./schemaTypes');
 
 
-const artistSchema = mongoose.Schema({
-  // artist id and name
-  spotifyId: types.Required(String),
-  name: String,
+const albumSchema = mongoose.Schema({
+  // album id and name
+  spotifyId: types.Required(String),    // album spotify id
+  name: String,                       // album name
 
 
   // meta data
-  imageURL: String,     // url for artist photo
-  followers: Number,    // number of followers
-  popularity: Number,   // artist popularity (0-100)
+  artists: [String],        // list of artist spotify ids
+
+  imageURL: String,      // url for album cover
+  albumType: String,     // either "album", "single" or "compilation"
+  totalTracks: Number,   // number of tracks in the album
+  releaseDate: String,   // date of album release
 
 
   // historical data
@@ -24,6 +27,7 @@ const artistSchema = mongoose.Schema({
 
   latestListenedDate: Date,       // most recent time album was listened to
   latestListenedTrackId: String,  // spotify id of recent track
-})
+});
 
-module.exports = mongoose.model('artists', artistSchema);
+
+module.exports = mongoose.model('albums', albumSchema);

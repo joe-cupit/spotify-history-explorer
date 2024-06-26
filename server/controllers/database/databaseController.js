@@ -1,5 +1,4 @@
-const Artist = require('../../models/artistSchema')
-const Track = require('../../models/trackSchema')
+const models = require('../../models/models')
 
 
 function saveToDB(item) {
@@ -18,7 +17,7 @@ function saveToDB(item) {
 
 async function addArtist(artistJson) {
   try {
-    const artist = new Artist(artistJson);
+    const artist = new models.Artist(artistJson);
     await artist.save();
     return {};
   } catch (err) {
@@ -38,7 +37,7 @@ function addArtists(artistList) {
 
 async function addTrack(trackJson) {
   try {
-    const track = new Track(trackJson);
+    const track = new models.Track(trackJson);
     await track.save();
     return {};
   } catch (err) {

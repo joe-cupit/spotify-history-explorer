@@ -1,8 +1,8 @@
-const trackApiCalls = require('../spotify/callWindowController');
 const sleep = require('../sleep');
 
-const databaseController = require('./databaseAccess');
-const spotifyController = require('../spotify/spotifyController');
+const databaseController = require('../../dbaccess/databaseAccess');
+const spotifyController = require('../spotify/apiController');
+const spotifyAccess = require('../spotify/apiAccess');
 
 
 async function addArtistsToDatabase(artists, updateJson) {
@@ -39,7 +39,11 @@ async function addTrackToDatabase(trackEntry) {
     shuffle: trackEntry.shuffle,
     offline: trackEntry.offline
   }
-  databaseController.addHistoryEntry(historyJson);
+  
+  const isNew = await databaseController.addHistoryEntry(historyJson);
+  if (!isNew) {
+    return -1;
+  }
 
   var updateJson = {
     $inc: {
@@ -62,9 +66,9 @@ async function addTrackToDatabase(trackEntry) {
     }
   }
   else {
-    await trackApiCalls.callPermission();
+    await spotifyController.callPermission();
 
-    const spotifyTrackData = await spotifyController.getTrack(trackId);
+    const spotifyTrackData = await spotifyAccess.getTrack(trackId);
     if (spotifyTrackData) {
       artistList = await addArtistsToDatabase(spotifyTrackData.artists, updateJson);
 

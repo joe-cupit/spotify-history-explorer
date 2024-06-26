@@ -8,13 +8,13 @@ const app = express();
 
 // Database connection
 
-const connectToMongoDB = require('./controllers/database/connect');
+const connectToMongoDB = require('./dbaccess/connect.js');
 connectToMongoDB();
 
 
 // Spotify API
 
-const spotifyApi = require('./controllers/spotify/connect');
+const spotifyApi = require('./controllers/spotify/apiController');
 spotifyApi.connectToSpotifyApi();
 spotifyApi.validateConnection();
 

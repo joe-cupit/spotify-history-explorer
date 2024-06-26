@@ -1,4 +1,4 @@
-const models = require('../../models/models')
+const models = require('../models/models')
 
 
 findOneAndUpdate = async function(model, json, update) {
@@ -29,13 +29,23 @@ exports.addOrUpdateArtist = async function(artistJson, updateJson) {
 
 
 exports.addHistoryEntry = async function(historyJson) {
+  isNewEntry = false;
   try {
     newEntry = new models.History(historyJson);
     await newEntry.save();
+    isNewEntry = true;
   } catch (err) {
-    console.log(`[MongoDB] Error adding history entry to database`);
-    console.log('[MongoDB]', err);
+    if (err.code === 11000) {
+      console.log('[MongoDB] Duplicate entry, skipping track');
+      isNewEntry = false;
+    }
+    else {
+      console.log(`[MongoDB] Error adding history entry to database`);
+      console.log('[MongoDB]', err);
+    }
   }
+
+  return isNewEntry;
 }
 
 

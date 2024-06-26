@@ -1,3 +1,5 @@
+const sleep = require('../sleep');
+
 require('dotenv').config();
 const SpotifyWebApi = require('spotify-web-api-node');
 
@@ -66,8 +68,7 @@ setRetryIn = function(retryIn) {
 
 callPermission = async function() {
   while(apiCallWindowSize >= MAX_API_CALLS) {
-    console.log(`[Spotify] Too many API calls in the past 30s
-                  (${apiCallWindowSize})`);
+    console.log(`[Spotify] Too many API calls in the past 30s (${apiCallWindowSize})`);
     await sleep(5000);
   }
 }

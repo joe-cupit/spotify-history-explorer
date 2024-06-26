@@ -44,8 +44,10 @@ async function addTrackToDatabase(trackEntry) {
   const trackId = trackEntry.spotify_track_uri.split(':')[2];
 
   var historyJson = {
-    trackId: trackId,
+    spotifyId: trackId,
     name: trackEntry.master_metadata_track_name,
+    type: 'track',
+
     artistName: trackEntry.master_metadata_album_artist_name,
     albumName: trackEntry.master_metadata_album_album_name,
 
@@ -106,8 +108,76 @@ async function addTrackToDatabase(trackEntry) {
 }
 
 
-async function addEpisodeToDatabase(episode) {
-  console.log('[MongoDB] Podcast episode, not yet implemented.');
+async function addShowToDatabase(spotifyShowData, updateJson) {
+  var showJson = {
+    spotifyId: spotifyShowData.id,
+    name: spotifyShowData.name,
+
+    imageURL: spotifyShowData.images[0].url,
+    totalEpisodes: spotifyShowData.total_episodes,
+  }
+
+  await databaseController.addOrUpdateShow(showJson, updateJson);
+}
+
+
+async function addEpisodeToDatabase(episodeEntry) {
+  const episodeId = episodeEntry.spotify_episode_uri.split(':')[2];
+
+  var historyJson = {
+    spotifyId: episodeId,
+    name: episodeEntry.episode_name,
+    type: 'episode',
+
+    showName: episodeEntry.episode_show_name,
+
+    listenedOn: new Date(episodeEntry.ts),
+    listenedFor: episodeEntry.ms_played,
+    skipped: episodeEntry.skipped,
+    shuffle: episodeEntry.shuffle,
+    offline: episodeEntry.offline
+  }
+  
+  const isNew = await databaseController.addHistoryEntry(historyJson);
+  if (!isNew) {
+    return -1;
+  }
+
+  var updateJson = {
+    $inc: {
+      totalListeningCount: 1,
+      totalListeningTime: episodeEntry.ms_played,
+      skippedCount: episodeEntry.skipped ? 1 : 0
+    }
+  }
+
+  var episodeJson = {
+    spotifyId: episodeId
+  }
+
+  var showId = await databaseController.getShowFromEpisodeIfExists(episodeId);
+  if (showId) {
+    console.log('[MongoDB] Episode info found in database');
+    await databaseController.addOrUpdateShow({ spotifyId: showId }, updateJson);
+  }
+  else {
+    await spotifyController.callPermission();
+
+    const spotifyEpisodeData = await spotifyAccess.getEpisode(episodeId);
+    if (spotifyEpisodeData) {
+
+      episodeJson.name = spotifyEpisodeData.name;
+      episodeJson.showId = spotifyEpisodeData.show.id;
+
+      episodeJson.imageURL = spotifyEpisodeData.images[0].url;
+      episodeJson.duration = spotifyEpisodeData.duration_ms;
+      episodeJson.releaseDate = spotifyEpisodeData.release_date;
+
+      await addShowToDatabase(spotifyEpisodeData.show, updateJson);
+    }
+  }
+
+  await databaseController.addOrUpdateEpisode(episodeJson, updateJson);
 }
 
 

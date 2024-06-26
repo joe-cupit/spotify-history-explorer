@@ -33,9 +33,25 @@ getTrack = async function(trackId) {
 }
 
 
+getEpisode = async function(episodeId) {
+  console.log('[Spotify] Finding episode with id', episodeId);
+  try {
+    response = await spotifyApi.getEpisode(episodeId, { market: 'GB'});
+    return response.body;
+  } catch (err) {
+    processError(err);
+    return null;
+  } finally {
+    spotifyController.addApiCalls(1);
+    await sleep(200);
+  }
+}
+
+
 module.exports = {
   getArtist,
-  getTrack
+  getTrack,
+  getEpisode
 }
 
 

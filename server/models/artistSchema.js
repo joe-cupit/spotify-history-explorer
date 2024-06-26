@@ -19,10 +19,10 @@ const artistSchema = mongoose.Schema({
   totalListeningTime: types.DefaultNumber,   // total time listened (ms)
   skippedCount: types.DefaultNumber,         // number of time skipped
   
-  firstListenedDate: Date,        // first time album was listened to
+  firstListenedDate: Date,        // first time artist was listened to
   firstListenedTrackId: String,   // spotify id of first track
 
-  latestListenedDate: Date,       // most recent time album was listened to
+  latestListenedDate: Date,       // most recent time artist was listened to
   latestListenedTrackId: String,  // spotify id of recent track
 })
 

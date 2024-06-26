@@ -14,7 +14,7 @@ const trackSchema = mongoose.Schema({
 
   imageURL: String,      // url for album cover
   duration: Number,      // duration of song (ms)
-  releaseDate: String,   // date of track release
+  releaseDate: String,   // date of track's album release
   popularity: Number,    // track popularity (0-100)
 
 
@@ -23,11 +23,8 @@ const trackSchema = mongoose.Schema({
   totalListeningTime: types.DefaultNumber,   // total time listened (ms)
   skippedCount: types.DefaultNumber,         // number of time skipped
   
-  firstListenedDate: Date,        // first time album was listened to
-  firstListenedTrackId: String,   // spotify id of first track
-
-  latestListenedDate: Date,       // most recent time album was listened to
-  latestListenedTrackId: String,  // spotify id of recent track
+  firstListenedDate: Date,        // first time track was listened to
+  latestListenedDate: Date,       // most recent time track was listened to
 })
 
 

@@ -3,13 +3,19 @@ const types = require('./schemaTypes');
 
 
 const historySchema = mongoose.Schema({
-  // track id and name
-  trackId: types.Required(String),
+  // spotify id and name
+  spotifyId: types.Required(String),
   name: String,
+
+
+  type: types.Required(String),   // either 'track' or 'episode'
+
+  // track data
   artistName: String,
   albumName: String,
 
-  // track: trackSchema,   // track entry in database
+  // episode data
+  showName: String,
 
 
   // historical data

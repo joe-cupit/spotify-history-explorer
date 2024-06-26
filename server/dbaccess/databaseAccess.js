@@ -33,6 +33,16 @@ exports.addOrUpdateAlbum = async function(albumJson, updateJson) {
 }
 
 
+exports.addOrUpdateEpisode = async function(episodeJson, updateJson) {
+  await findOneAndUpdate(models.Episode, episodeJson, updateJson);
+}
+
+
+exports.addOrUpdateShow = async function(showJson, updateJson) {
+  await findOneAndUpdate(models.Show, showJson, updateJson);
+}
+
+
 exports.addHistoryEntry = async function(historyJson) {
   isNewEntry = false;
   try {
@@ -41,7 +51,7 @@ exports.addHistoryEntry = async function(historyJson) {
     isNewEntry = true;
   } catch (err) {
     if (err.code === 11000) {
-      console.log('[MongoDB] Duplicate entry, skipping track');
+      console.log('[MongoDB] Skipping duplicate entry');
       isNewEntry = false;
     }
     else {
@@ -58,7 +68,7 @@ exports.getArtistsAndAlbumFromTrackIfExists = async function(trackId) {
   var artistList = null;
   var albumId = null;
   try {
-    const track = await models.Track.findOne({ spotifyId: trackId }, 'artists albumId')
+    const track = await models.Track.findOne({ spotifyId: trackId }, 'artists albumId');
     artistList = track.artists;
     albumId = track.albumId;
   } catch (err) {
@@ -68,3 +78,15 @@ exports.getArtistsAndAlbumFromTrackIfExists = async function(trackId) {
   return [ artistList, albumId ];
 }
 
+
+exports.getShowFromEpisodeIfExists = async function(episodeId) {
+  var showId = null;
+  try {
+    const episode = await models.Episode.findOne({ spotifyId: episodeId }, 'showId');
+    showId = episode.showId;
+  } catch (err) {
+    showId = null;
+  }
+
+  return showId;
+}

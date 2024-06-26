@@ -1,10 +1,22 @@
 const mongoose = require('mongoose');
 
-const artistSchema = mongoose.Schema({
-  spotifyId: String,            // spotify id for the artist
-  name: String,                 // name of the artist
+const RequiredString = {
+  type: String,
+  required: true
+}
 
-  totalListeningTime: Number,   // total time listened to artist in ms
+
+const artistSchema = mongoose.Schema({
+  spotifyId: RequiredString,    // spotify id for the artist
+  name: RequiredString,         // name of the artist
+
+  totalListeningCount: Number,
+  totalListeningTime:  {        // total time listened to track in ms
+    type: Number,
+     default: 0
+  },
+
+  skippedCount: Number,
   
   firstListenedDate: Date,      // date of first song listened by artist
   firstListenedSongId: String,  // spotify id of first song listened by artist

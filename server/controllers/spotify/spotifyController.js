@@ -1,21 +1,88 @@
-var SpotifyWebApi = require('spotify-web-api-node');
+const spotifyApi = require('./connect').getSpotifyApi();
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET
-});
-spotifyApi.setAccessToken(process.env.ACCESS_TOKEN);
+spotifyApiWindow = require('./callWindowController');
+
+const sleep = require('../sleep');
+
+
+processError = function(err) {
+  try{
+    switch(err.body.statusCode) {
+    case 429:
+      console.log('[Spotify] Error 429: Too many requests');
+      const retryIn = err.body.headers['retry-after'];
+      console.log(`[Spotify] Retry again in ${retryIn}`)
+      spotifyApiWindow.setRetryAgain(retryIn);
+      break;
+    case 502:
+      console.log('[Spotify] Error 502: Bad gateway');
+      // retry again
+      break;
+    default:
+      console.log('[Spotify] Encountered an error');
+  }
+  } catch (err) {
+    console.log('[Spotify] Encountered an unknown error');
+  }
+  
+  console.log('[Spotify]', err);
+}
+
+
+makeRequest = async function(spotifyFunc, params) {
+  try {
+    response = await spotifyFunc(params);
+    return response.body;
+  } catch (err) {
+    console.log(err);
+    processError(err);
+    return null;
+  } finally {
+    spotifyApiWindow.addApiCalls(1);
+    await sleep(200);
+  }
+}
+
+
+exports.getArtist = async function(artistId) {
+  console.log('[Spotify] Finding artist with id', artistId);
+  try {
+    response = await spotifyApi.getArtist(artistId);
+    return response.body;
+  } catch (err) {
+    processError(err);
+    return null;
+  } finally {
+    spotifyApiWindow.addApiCalls(1);
+    await sleep(200);
+  }
+}
+
+
+exports.getTrack = async function(trackId) {
+  console.log('[Spotify] Finding track with id', trackId);
+  try {
+    response = await spotifyApi.getTrack(trackId);
+    return response.body;
+  } catch (err) {
+    processError(err);
+    return null;
+  } finally {
+    spotifyApiWindow.addApiCalls(1);
+    await sleep(200);
+  }
+}
 
 
 exports.artist = (req, res) => {
   var id = req.params.id;
 
   (async () => {
-    console.log(`[Node.js] Finding artist with id '${id}'`);
+    console.log(`[Spotify] Finding artist with id '${id}'`);
 
     spotifyApi.getArtist(id).then(
       function(data) {
-        console.log(`[Node.js] Matched id to '${data.body.name}'`);
+        console.log(`[Spotify] Matched id to '${data.body.name}'`);
         data.body.status = data.statusCode;
         res.send(data.body);
       },
@@ -33,11 +100,11 @@ exports.track = (req, res) => {
   var id = req.params.id;
 
   (async () => {
-    console.log(`[Node.js] Finding track with id '${id}'`);
+    console.log(`[Spotify] Finding track with id '${id}'`);
 
     spotifyApi.getTrack(id).then(
       function(data) {
-        console.log(`[Node.js] Matched id to '${data.body.name} by ${data.body.artists[0].name}'`);
+        console.log(`[Spotify] Matched id to '${data.body.name} by ${data.body.artists[0].name}'`);
         data.body.status = data.statusCode;
         res.send(data.body);
       },
@@ -59,7 +126,7 @@ exports.search = (req, res) => {
 
   (async () => {
     if (validSearchTypes.has(type)) {
-      console.log(`[Node.js] Searching ${type}s for '${term}'...`);
+      console.log(`[Spotify] Searching ${type}s for '${term}'...`);
 
       spotifyApi.search(term, [type], { limit: 10 }).then(
         function(data) {
@@ -71,7 +138,7 @@ exports.search = (req, res) => {
         }
       );
     } else {
-      console.log(`[Node.js] Invalid search type: '${type}'`);
+      console.log(`[Spotify] Invalid search type: '${type}'`);
       res.json({ status: 400, message: `Invalid search type '${type}'`})
     }
   })();

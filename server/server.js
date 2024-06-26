@@ -1,6 +1,3 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-
 
 // Server setup
 
@@ -17,13 +14,19 @@ connectToMongoDB();
 
 // Spotify API
 
-const connectToSpotifyApi = require('./controllers/spotify/connect');
-const spotifyApi = connectToSpotifyApi();
+const spotifyApi = require('./controllers/spotify/connect');
+spotifyApi.connectToSpotifyApi();
+spotifyApi.validateConnection();
 
 
 // API routes
 
 app.use('/api', require('./routes/router'));
+
+
+// JSON stuff
+
+require('./controllers/loading/loadHistory.js');
 
 
 // Begin server
@@ -35,6 +38,7 @@ app.listen(PORT, () => {
 
 
 // Closing server
+const mongoose = require('mongoose');
 
 process.on('SIGINT', async () => {
   console.log('[Server] Keyboard interrupt');

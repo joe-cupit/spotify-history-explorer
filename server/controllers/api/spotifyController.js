@@ -1,11 +1,17 @@
 const spotifyAccess = require('../spotify/apiAccess');
+const databaseAccesss = require('../../dbaccess/databaseAccess');
 
 
 exports.artist = async (req, res) => {
   var id = req.params.id;
 
   const spotifyArtistData = await spotifyAccess.getArtist(id);
-  res.send(spotifyArtistData);
+  const mongoArtistData = await databaseAccesss.getArtistById(id);
+
+  res.json({
+    spotify: spotifyArtistData,
+    mongodb: mongoArtistData
+  });
 
 };
 
@@ -14,7 +20,13 @@ exports.track = async (req, res) => {
   var id = req.params.id;
 
   const spotifyTrackData = await spotifyAccess.getTrack(id);
-  res.send(spotifyTrackData);
+  const mongoTrackData = await databaseAccesss.getTrackById(id);
+  // TODO: If never listened to sort that out.
+  
+  res.json({
+    spotify: spotifyTrackData,
+    mongodb: mongoTrackData
+  });
 
 };
 

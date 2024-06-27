@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import { millisecondsToReadableTime } from "../assets/helper";
+
 import { ArtistLink } from "../components/ArtistLink";
 
 
@@ -24,15 +26,23 @@ export function TrackPage() {
 
   return (
     <>
-    {trackData && <img src={trackData.album.images[1].url} alt="Album cover" />}
-    <h1>{!trackData ? "Loading track..." : trackData.name}</h1>
-    <p>{trackData && fomatDuration(trackData.duration_ms)}</p>
+    {trackData && <img src={trackData.spotify.album.images[1].url} alt="Album cover" />}
+    <h1>{!trackData ? "Loading track..." : trackData.spotify.name}</h1>
+    <p>{trackData && fomatDuration(trackData.spotify.duration_ms)}</p>
 
     <p>
       {trackData && "by"} 
-      {trackData && trackData.artists.map((artist, index) => {
+      {trackData && trackData.spotify.artists.map((artist, index) => {
         return (<ArtistLink id={artist.id} name={artist.name} key={index} />)
       })}
+    </p>
+
+    <p>{trackData && `Listened for: ${millisecondsToReadableTime(trackData.mongodb.totalListeningTime)}`}</p>
+    <p>
+      {trackData &&
+        `Listened on ${trackData.mongodb.totalListeningCount} occasions
+        (skipped ${trackData.mongodb.skippedCount} times)`
+      }
     </p>
     </>
   )

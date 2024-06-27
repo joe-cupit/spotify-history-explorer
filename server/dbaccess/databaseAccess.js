@@ -90,3 +90,28 @@ exports.getShowFromEpisodeIfExists = async function(episodeId) {
 
   return showId;
 }
+
+
+exports.getArtistById = async function(artistId) {
+  console.log('[MongoDB] Retrieving artist with id', artistId);
+  try {
+    const artistData = await models.Artist.findOne({ spotifyId: artistId });
+    return artistData;
+  } catch (err) {
+    console.log('[MongoDB] Error finding artist');
+    console.log('[MongoDB]', err);
+    return null;
+  }
+}
+
+exports.getTrackById = async function(trackId) {
+  console.log('[MongoDB] Retrieving track with id', trackId);
+  try {
+    const trackData = await models.Track.findOne({ spotifyId: trackId });
+    return trackData;
+  } catch (err) {
+    console.log('[MongoDB] Error finding track');
+    console.log('[MongoDB]', err);
+    return null;
+  }
+}

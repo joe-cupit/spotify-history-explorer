@@ -51,7 +51,7 @@ searchFor = async function(term, type) {
   console.log(`[Spotify] Searching ${type}s for '${term}'`);
 
   try {
-    response = await spotifyApi.search(term, [type], { limit: 10 });
+    response = await spotifyApi.search(term, [type], { limit: 10 , market: 'GB' });
     return response.body[type+'s'].items;
   } catch (err) {
     processError(err);

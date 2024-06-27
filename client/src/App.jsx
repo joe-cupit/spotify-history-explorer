@@ -13,7 +13,7 @@ function App() {
 
   return (
     <>
-    <main className="App-header">
+    <main className="App">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />

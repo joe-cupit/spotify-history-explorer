@@ -1,7 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { millisecondsToReadableTime } from "../assets/helper";
+// import { millisecondsToReadableTime } from "../assets/helper";
+
+import { StatsHeader } from "../components/StatsTitle";
 
 
 export function ArtistPage() {
@@ -13,22 +15,20 @@ export function ArtistPage() {
     fetch(`/api/artist/${id}`)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setArtistData(data);
       });
   }, [id]);
 
   return (
     <>
-    {artistData && <img src={artistData.spotify.images[1].url} alt="Artist" />}
-    <h1>{!artistData ? "Loading artist..." : artistData.spotify.name}</h1>
-    <p>{artistData && `Followers: ${artistData.spotify.followers.total.toLocaleString()}`}</p>
-    <p>{artistData && `Listened for: ${millisecondsToReadableTime(artistData.mongodb.totalListeningTime)}`}</p>
-    <p>
-      {artistData &&
-        `Listened on ${artistData.mongodb.totalListeningCount} occasions
-        (skipped ${artistData.mongodb.skippedCount} times)`
-      }
-    </p>
+    {artistData &&
+      <StatsHeader
+        imageURL={artistData.imageURL}
+        name={artistData.name}
+        listened_ms={artistData.totalListeningTime}
+      />
+    }
     </>
   )
 }

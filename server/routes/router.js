@@ -1,7 +1,7 @@
 const express = require('express');
 const route = express.Router();
 
-const spotifyController = require('../controllers/api/spotifyController');
+const spotifyController = require('../controllers/api/apiController');
 
 
 // API

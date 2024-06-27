@@ -9,15 +9,13 @@ export function millisecondsToReadableTime(ms) {
   }
 
   const mins = Math.trunc(ms / (1000*60));
-  if (mins > 0) {
+  if (hours > 0 || mins > 0) {
     timeParts.push(mins + 'm');
     ms = ms - (mins * (1000*60));
   }
 
   const seconds = Math.trunc(ms / 1000);
-  if (seconds > 0) {
-    timeParts.push(seconds + 's');
-  }
+  timeParts.push(seconds + 's');
 
   return timeParts.join(' ');
 }

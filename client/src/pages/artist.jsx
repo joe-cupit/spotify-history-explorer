@@ -18,9 +18,9 @@ export function ArtistPage() {
 
   return (
     <>
-    {artistData && artistData.status === 200 && <img src={artistData.images[1].url} alt="Artist" />}
-    <h1>{!artistData ? "Loading artist..." : artistData.status === 200 ? artistData.name : `${artistData.status} - ${artistData.message}`}</h1>
-    <p>{artistData && artistData.status === 200 && `Followers: ${artistData.followers.total.toLocaleString()}`}</p>
+    {artistData && <img src={artistData.images[1].url} alt="Artist" />}
+    <h1>{!artistData ? "Loading artist..." : artistData.name}</h1>
+    <p>{artistData && `Followers: ${artistData.followers.total.toLocaleString()}`}</p>
     </>
   )
 }

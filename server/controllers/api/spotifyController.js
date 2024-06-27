@@ -1,73 +1,35 @@
-const spotifyApi = require('../spotify/apiController').getSpotifyApi();
+const spotifyAccess = require('../spotify/apiAccess');
 
 
-
-exports.artist = (req, res) => {
+exports.artist = async (req, res) => {
   var id = req.params.id;
 
-  (async () => {
-    console.log(`[Spotify] Finding artist with id '${id}'`);
+  const spotifyArtistData = await spotifyAccess.getArtist(id);
+  res.send(spotifyArtistData);
 
-    spotifyApi.getArtist(id).then(
-      function(data) {
-        console.log(`[Spotify] Matched id to '${data.body.name}'`);
-        data.body.status = data.statusCode;
-        res.send(data.body);
-      },
-      function(err) {
-        console.error(err);
-        res.send(err.body.error);
-      }
-    );
-
-  })();
 };
 
 
 exports.track = async (req, res) => {
   var id = req.params.id;
 
-  (async () => {
-    console.log(`[Spotify] Finding track with id '${id}'`);
+  const spotifyTrackData = await spotifyAccess.getTrack(id);
+  res.send(spotifyTrackData);
 
-    spotifyApi.getTrack(id).then(
-      function(data) {
-        console.log(`[Spotify] Matched id to '${data.body.name} by ${data.body.artists[0].name}'`);
-        data.body.status = data.statusCode;
-        res.send(data.body);
-      },
-      function(err) {
-        console.error(err);
-        res.send(err.body.error);
-      }
-    );
-
-  })();
 };
 
 
-exports.search = (req, res) => {
+exports.search = async (req, res) => {
   var type = req.params.type;
   var term = req.params.term;
 
   const validSearchTypes = new Set(['artist', 'track', 'album', 'episode']);
 
-  (async () => {
-    if (validSearchTypes.has(type)) {
-      console.log(`[Spotify] Searching ${type}s for '${term}'...`);
-
-      spotifyApi.search(term, [type], { limit: 10 }).then(
-        function(data) {
-          res.send(data.body[type+'s'].items);
-        },
-        function(err) {
-          console.error(err);
-          res.send(err.body.error);
-        }
-      );
-    } else {
-      console.log(`[Spotify] Invalid search type: '${type}'`);
-      res.json({ status: 400, message: `Invalid search type '${type}'`})
-    }
-  })();
+  if (validSearchTypes.has(type)) {
+    const spotifySearchResult = await spotifyAccess.searchFor(term, [type]);
+    res.json(spotifySearchResult);
+  } else {
+    console.log(`[Spotify] Invalid search type: '${type}'`);
+    res.send({});
+  }
 };

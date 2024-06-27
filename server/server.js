@@ -26,7 +26,7 @@ app.use('/api', require('./routes/router'));
 
 // JSON stuff
 
-require('./controllers/loading/loadHistory.js');
+// require('./controllers/loading/loadHistory.js');
 
 
 // Begin server

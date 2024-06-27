@@ -32,7 +32,6 @@ getTrack = async function(trackId) {
   }
 }
 
-
 getEpisode = async function(episodeId) {
   console.log('[Spotify] Finding episode with id', episodeId);
   try {
@@ -48,10 +47,28 @@ getEpisode = async function(episodeId) {
 }
 
 
+searchFor = async function(term, type) {
+  console.log(`[Spotify] Searching ${type}s for '${term}'`);
+
+  try {
+    response = await spotifyApi.search(term, [type], { limit: 10 });
+    return response.body[type+'s'].items;
+  } catch (err) {
+    processError(err);
+    return null;
+  } finally {
+    spotifyController.addApiCalls(1);
+    await sleep(200);
+  }
+}
+
+
 module.exports = {
   getArtist,
   getTrack,
-  getEpisode
+  getEpisode,
+  
+  searchFor
 }
 
 

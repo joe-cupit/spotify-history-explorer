@@ -24,16 +24,15 @@ export function TrackPage() {
 
   return (
     <>
-    {trackData && trackData.status === 200 && <img src={trackData.album.images[1].url} alt="Album cover" />}
-    <h1>{!trackData ? "Loading track..." : trackData.status === 200 ? trackData.name : `${trackData.status} - ${trackData.message}`}</h1>
-    <p>{trackData && trackData.status === 200 && fomatDuration(trackData.duration_ms)}</p>
+    {trackData && <img src={trackData.album.images[1].url} alt="Album cover" />}
+    <h1>{!trackData ? "Loading track..." : trackData.name}</h1>
+    <p>{trackData && fomatDuration(trackData.duration_ms)}</p>
 
     <p>
-      {trackData && trackData.status === 200 && "by"} 
-      {trackData && trackData.status === 200
-        && trackData.artists.map((artist, index) => {
+      {trackData && "by"} 
+      {trackData && trackData.artists.map((artist, index) => {
         return (<ArtistLink id={artist.id} name={artist.name} key={index} />)
-        })}
+      })}
     </p>
     </>
   )

@@ -1,9 +1,26 @@
-import "./StatsTitle.css"
+import "./StatsTitle.css";
+
+import { useEffect, useState } from "react";
 
 import { millisecondsToReadableTime } from "../assets/helper";
 
+import { RankBadge } from "./RankBadge";
 
-export function StatsHeader({ imageURL, name, listened_ms }) {
+
+export function StatsHeader({ imageURL, name, listened_ms, id }) {
+
+  const [artistRank, setArtistRank] = useState(null);
+
+
+  useEffect(() => {
+    fetch(`/api/artist/${id}/rank`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setArtistRank(data.artistRank);
+      });
+  }, [id]);
+
 
   return (
     <>
@@ -15,6 +32,7 @@ export function StatsHeader({ imageURL, name, listened_ms }) {
         <div className="Stats-title-timeDiv">
           Listened for<br/>
           <span className="Stats-title-time">{millisecondsToReadableTime(listened_ms)}</span>
+          { artistRank && <a href="/artists" className="Stats-title-rank"><RankBadge rank={artistRank} /></a> }
         </div>
       </div>
     </div>

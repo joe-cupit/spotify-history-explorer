@@ -24,8 +24,16 @@
 }
 .Stats-title-timeDiv {
   padding-top: 5px;
+
 }
 .Stats-title-time {
   font-size: 2em;
   font-weight: bold;
+  float: left;
+}
+
+.Stats-title-rank {
+  margin-left: 50px;
+  float: left;
+  cursor: pointer;
 }

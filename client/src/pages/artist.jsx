@@ -29,6 +29,7 @@ export function ArtistPage() {
           imageURL={artistData.imageURL}
           name={artistData.name}
           listened_ms={artistData.totalListeningTime}
+          id={id}
         />
 
         <TopTracks artistId={id} limit={5} />

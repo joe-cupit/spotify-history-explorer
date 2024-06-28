@@ -136,3 +136,19 @@ exports.getTopTracksByArtist = async function(artistId, limit) {
     return null;
   }
 }
+
+
+exports.getArtistRank = async function(artistId) {
+  console.log('[MongoDB] Getting rank for artist with id', artistId);
+
+  try {
+    const artistData = await models.Artist.findOne({ spotifyId: artistId }, 'totalListeningTime');
+    const rank = await models.Artist.find({totalListeningTime: { "$gt": artistData.totalListeningTime }}).count();
+
+    return rank+1;
+  } catch (err) {
+    console.log('[MongoDB] Error finding rank');
+    console.log('[MongoDB]', err);
+    return null;
+  }
+}

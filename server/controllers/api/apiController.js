@@ -108,3 +108,11 @@ exports.getTopTracksByArtist = async (req, res) => {
   const mongoTopTracks = await databaseAccesss.getTopTracksByArtist(artistId, limit);
   res.send(mongoTopTracks);
 }
+
+
+exports.getArtistRank = async (req, res) => {
+  const artistId = req.params.id;
+
+  const artistRank = await databaseAccesss.getArtistRank(artistId);
+  res.send({ artistRank: artistRank });
+}

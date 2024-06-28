@@ -8,6 +8,12 @@
   min-height: 100vh;
 }
 
+
+a {
+  text-decoration: none;
+}
+
+
 input {
   font-size: calc(10px + 2vmin);
 }

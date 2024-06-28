@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 // import { millisecondsToReadableTime } from "../assets/helper";
 
 import { StatsHeader } from "../components/StatsTitle";
+import { TopTracks } from "../components/TopTracks";
 
 
 export function ArtistPage() {
@@ -23,11 +24,15 @@ export function ArtistPage() {
   return (
     <>
     {artistData &&
-      <StatsHeader
-        imageURL={artistData.imageURL}
-        name={artistData.name}
-        listened_ms={artistData.totalListeningTime}
-      />
+      <>
+        <StatsHeader
+          imageURL={artistData.imageURL}
+          name={artistData.name}
+          listened_ms={artistData.totalListeningTime}
+        />
+
+        <TopTracks artistId={id} limit={5} />
+      </>
     }
     </>
   )

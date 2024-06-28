@@ -115,3 +115,24 @@ exports.getTrackById = async function(trackId) {
     return null;
   }
 }
+
+
+exports.getTopTracksByArtist = async function(artistId, limit) {
+  console.log('[MongoDB] Getting top songs for artist with id', artistId);
+  var topTracks = null;
+  try {
+    if (limit) {
+      topTracks = await models.Track.find({ artists: artistId })
+        .sort({ totalListeningTime: -1 })
+        .limit(limit);
+    } else {
+      topTracks = await models.Track.find({ artists: artistId })
+        .sort({ totalListeningTime: -1 });
+    }
+    return topTracks;
+  } catch (err) {
+    console.log('[MongoDB] Error finding top songs');
+    console.log('[MongoDB]', err);
+    return null;
+  }
+}

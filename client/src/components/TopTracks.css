@@ -1,0 +1,50 @@
+.TopTracks {
+  width: 800px;
+}
+
+.TrackCard {
+  width: 100%;
+  height: 80px;
+  background-color: #20242a;
+
+  padding: 7px;
+  margin: 3px;
+
+  display: flex;
+  align-items: center;
+}
+
+.TrackCard img {
+  height: 100%;
+  float: left;
+}
+
+.TrackCard-Name {
+  font-size: 2em;
+  font-weight: bold;
+
+  color: white;
+  text-decoration: none;
+  margin-left: 15px;
+  cursor: pointer;
+}
+.TrackCard-Name:hover {
+  color: #d9d5d5;
+}
+
+
+.Progress {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+
+.TrackCard-ViewAll {
+  font-size: 1.3em;
+  color: white;
+  text-decoration: none;
+  float: right;
+}
+.TrackCard-ViewAll:hover {
+  text-decoration: underline;
+}

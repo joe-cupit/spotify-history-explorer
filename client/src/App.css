@@ -8,11 +8,6 @@
   min-height: 100vh;
 }
 
-a {
-  color: #61dafb;
-  padding: 0 10px;
-}
-
 input {
   font-size: calc(10px + 2vmin);
 }

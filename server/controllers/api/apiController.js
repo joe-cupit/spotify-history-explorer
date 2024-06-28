@@ -99,3 +99,12 @@ exports.search = async (req, res) => {
     res.send({});
   }
 };
+
+
+exports.getTopTracksByArtist = async (req, res) => {
+  const artistId = req.params.id;
+  const limit = req.params.limit;
+
+  const mongoTopTracks = await databaseAccesss.getTopTracksByArtist(artistId, limit);
+  res.send(mongoTopTracks);
+}

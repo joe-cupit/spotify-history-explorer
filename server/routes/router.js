@@ -1,7 +1,7 @@
 const express = require('express');
 const route = express.Router();
 
-const spotifyController = require('../controllers/api/apiController');
+const apiController = require('../controllers/api/apiController');
 
 
 // API
@@ -10,9 +10,12 @@ route.get('/', (req, res) => {
   res.send('API connected');
 });
 
-route.get('/artist/:id', spotifyController.artist);
-route.get('/track/:id', spotifyController.track);
-route.get('/search/:type/:term', spotifyController.search);
+
+route.get('/artist/:id', apiController.artist);
+route.get('/artist/:id/toptracks/:limit', apiController.getTopTracksByArtist)
+
+route.get('/track/:id', apiController.track);
+route.get('/search/:type/:term', apiController.search);
 
 
 // Export router

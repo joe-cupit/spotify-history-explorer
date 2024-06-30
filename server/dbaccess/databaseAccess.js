@@ -152,3 +152,19 @@ exports.getArtistRank = async function(artistId) {
     return null;
   }
 }
+
+
+exports.getArtistsOrderByTimeListened = async function() {
+  console.log('[MongoDB] Getting all artists');
+
+  try {
+    const artistData = await models.Artist.find({})
+      .sort({ totalListeningTime: -1 });
+    return artistData;
+  } catch (err) {
+    console.log('[MongoDB] Error getting all artists');
+    console.log('[MongoDB]', err);
+    return null;
+  }
+}
+

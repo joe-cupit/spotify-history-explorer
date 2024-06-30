@@ -1,0 +1,36 @@
+.artist-results {
+  width: 1200px;
+}
+.artist-results table {
+  border-collapse: collapse;
+}
+
+
+.image-placeholder {
+  height: 150px;
+  width: 150px;
+  background-color: #1a1c20;
+  margin: 10px;
+}
+
+
+.artist-row {
+  font-size: 2em;
+  color: white;
+  font-weight: bold;
+}
+.artist-row#selected-artist {
+  background-color: #323948;
+}
+
+.artist-row a {
+  color: white;
+}
+.artist-row a:hover {
+  color: #d6d6d6;
+}
+.artist-row img {
+  max-width: 150px;
+  max-height: 150px;
+  margin: 10px;
+}

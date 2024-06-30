@@ -2,6 +2,12 @@ const spotifyAccess = require('../spotify/apiAccess');
 const databaseAccesss = require('../../dbaccess/databaseAccess');
 
 
+exports.artists = async (req, res) => {
+  const mongoArtistList = await databaseAccesss.getArtistsOrderByTimeListened();
+  res.send(mongoArtistList);
+}
+
+
 exports.artist = async (req, res) => {
   const id = req.params.id;
 

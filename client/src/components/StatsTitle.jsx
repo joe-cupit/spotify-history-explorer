@@ -32,7 +32,7 @@ export function StatsHeader({ imageURL, name, listened_ms, id }) {
         <div className="Stats-title-timeDiv">
           Listened for<br/>
           <span className="Stats-title-time">{millisecondsToReadableTime(listened_ms)}</span>
-          { artistRank && <a href="/artists" className="Stats-title-rank"><RankBadge rank={artistRank} /></a> }
+          { artistRank && <a href={"/artists?rank="+artistRank} className="Stats-title-rank"><RankBadge rank={artistRank} /></a> }
         </div>
       </div>
     </div>

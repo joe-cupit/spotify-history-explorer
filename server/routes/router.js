@@ -11,6 +11,7 @@ route.get('/', (req, res) => {
 });
 
 
+route.get('/artists', apiController.artists);
 route.get('/artist/:id', apiController.artist);
 route.get('/artist/:id/rank', apiController.getArtistRank);
 route.get('/artist/:id/toptracks/:limit', apiController.getTopTracksByArtist)

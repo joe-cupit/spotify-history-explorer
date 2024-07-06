@@ -37,13 +37,14 @@ export function ArtistsPage(props) {
   function presentResults(artistList) {
     return (
       <>
-      <table>
+      <table className="artist-table">
         <thead>
           <tr>
+            <th>Rank</th>
             <th></th>
-            <th>Artist</th>
-            <th>Times listened</th>
-            <th>Listened for</th>
+            <th class="artist-table-name">Artist</th>
+            <th>Occasions</th>
+            <th>Total time</th>
           </tr>
         </thead>
         <tbody>
@@ -54,13 +55,14 @@ export function ArtistsPage(props) {
             }
             return (
               <tr className="artist-row" id={id} key={index}>
+                <td>#{index+1}</td>
                 <td>
                   {item.imageURL
                    ? <img src={item.imageURL} alt={item.name} />
                    : <div className="image-placeholder"></div>
                   }
                 </td>
-                <td>
+                <td class="artist-table-name">
                   <a href={"/artist/"+item.spotifyId}>{item.name}</a>
                 </td>
                 <td>

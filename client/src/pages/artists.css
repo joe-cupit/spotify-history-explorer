@@ -14,6 +14,27 @@
 }
 
 
+.artist-table thead {
+  font-size: 2em;
+  text-align: center;
+}
+.artist-table tr {
+  text-align: center;
+}
+
+.artist-table tr:hover {
+  background-color: #22262c;
+  cursor: pointer;
+}
+
+.artist-table-name {
+  max-width: 450px;
+  text-align: left;
+}
+.artist-table-name a {
+  margin-left: 10px;
+}
+
 .artist-row {
   font-size: 2em;
   color: white;
@@ -23,11 +44,13 @@
   background-color: #323948;
 }
 
+.artist-row-rank {
+  font-size: 1.5em;
+  text-align: center;
+}
+
 .artist-row a {
   color: white;
-}
-.artist-row a:hover {
-  color: #d6d6d6;
 }
 .artist-row img {
   max-width: 150px;

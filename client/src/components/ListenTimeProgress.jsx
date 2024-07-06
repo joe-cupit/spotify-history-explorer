@@ -8,9 +8,8 @@ export function ListenTimeProgress({ time, maxTime }) {
   return (
     <>
       <div className="TimeProgress-Container">
-        <div className="TimeProgress-Progress" style={{width: 100*(time / maxTime)+"%"}}>
-          {millisecondsToReadableTime(time)}
-        </div>
+        <div className="TimeProgress-Progress" style={{width: 100*(time / maxTime)+"%"}}></div>
+        <div className="TimeProgress-Text">{millisecondsToReadableTime(time)}</div>
       </div>
     </>
   )

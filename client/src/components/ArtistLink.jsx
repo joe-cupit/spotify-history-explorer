@@ -1,10 +1,11 @@
+import { Link } from "react-router-dom"
 
 
 export function ArtistLink(props) {
 
     return (
         <>
-        <a href={`/artist/${props.id}`}>{props.name}</a>
+        <Link to={`/artist/${props.id}`}>{props.name}</Link>
         </>
     )
 }

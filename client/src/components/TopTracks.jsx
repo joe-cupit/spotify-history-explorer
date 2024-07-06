@@ -2,6 +2,7 @@ import "./TopTracks.css"
 
 import { useEffect, useState } from "react";
 
+import { Link } from "react-router-dom";
 import { TrackCard } from "./TrackCard";
 
 
@@ -37,7 +38,7 @@ export function TopTracks({ artistId , limit }) {
           />
         )
       })}
-      {limit ? <a href={"/artist/"+artistId+"/toptracks"} className="TrackCard-ViewAll">view all...</a> : null}
+      {limit ? <Link to={"/artist/"+artistId+"/toptracks"} className="TrackCard-ViewAll">view all...</Link> : null}
     </div>
     </>
   )

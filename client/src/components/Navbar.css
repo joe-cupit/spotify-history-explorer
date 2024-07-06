@@ -1,0 +1,101 @@
+.nav {
+  background-color: #15171d;
+  color: white;
+  font-size: 1.5rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 2rem;
+  padding: .5rem 1rem;
+}
+
+.nav-left {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-title {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.nav ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  display: flex;
+}
+
+.nav a {
+  color: inherit;
+  text-decoration: none;
+
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: .25rem .75rem;
+}
+
+.nav li.active {
+  font-weight: bold;
+}
+
+.nav a:hover {
+  color: #b8bdd1;
+}
+
+
+.nav-right {
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.nav input {
+  background-color: #09090c;
+  color: #fff;
+  font-size: inherit;
+
+  width: 10rem;
+
+  padding: 0.5rem 0.75rem;
+
+  border: 0.1rem solid #4d515e;
+  border-radius: 0.4rem;
+
+  transition-duration: .2s;
+}
+.nav input:focus {
+  outline: none;
+  border-color: #758ee1;
+
+  width: 25rem;
+}
+.nav input::placeholder {
+  color: #aaa;
+  opacity: 1;
+}
+.nav input::-webkit-search-cancel-button{
+  cursor: pointer;
+}
+
+.nav button {
+  font-size: inherit;
+  padding: 0.4rem;
+  background: none;
+  color: #0ca441;
+
+  border: 0.1rem solid #0ca441;
+  border-radius: 0.4rem;
+
+  cursor: pointer;
+
+  transition-duration: .1s;
+}
+.nav button:hover {
+  color: white;
+  background-color: #0ca441;
+}

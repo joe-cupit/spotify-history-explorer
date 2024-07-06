@@ -1,10 +1,11 @@
+import { Link } from "react-router-dom"
 
 
 export function SearchResult(props) {
 
   return (
       <>
-      <a href={`/${props.type}/${props.id}`}>{props.name}</a>
+      <Link to={`/${props.type}/${props.id}`}>{props.name}</Link>
       </>
   )
 }

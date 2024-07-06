@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import { NotFoundPage } from "./pages/notfound";
 import { HomePage } from "./pages/home";
@@ -8,6 +8,7 @@ import { SearchPage } from "./pages/search";
 import { ArtistPage } from "./pages/artist";
 import { ArtistsPage } from "./pages/artists";
 import { TrackPage } from "./pages/track";
+import { Navbar } from "./components/Navbar";
 
 import { TopTracksPage } from "./pages/toptracks";
 
@@ -16,8 +17,8 @@ function App() {
 
   return (
     <>
-    <main className="App">
-      <BrowserRouter>
+      <Navbar />
+      <main className="App">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/artist/" element={<SearchPage searchType='artist' />} />
@@ -28,8 +29,7 @@ function App() {
           <Route path="/track/:id" element={<TrackPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-      </BrowserRouter>      
-    </main>
+      </main>
 
     </>
   )

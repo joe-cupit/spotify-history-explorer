@@ -3,6 +3,7 @@ import "./StatsTitle.css";
 import { useEffect, useState } from "react";
 
 import { millisecondsToReadableTime } from "../assets/helper";
+import { Link } from "react-router-dom";
 
 import { RankBadge } from "./RankBadge";
 
@@ -32,7 +33,7 @@ export function StatsHeader({ imageURL, name, listened_ms, id }) {
         <div className="Stats-title-timeDiv">
           Listened for<br/>
           <span className="Stats-title-time">{millisecondsToReadableTime(listened_ms)}</span>
-          { artistRank && <a href={"/artists?rank="+artistRank} className="Stats-title-rank"><RankBadge rank={artistRank} /></a> }
+          { artistRank && <Link to={"/artists?rank="+artistRank} className="Stats-title-rank"><RankBadge rank={artistRank} /></Link> }
         </div>
       </div>
     </div>

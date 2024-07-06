@@ -1,6 +1,8 @@
 
 import { ListenTimeProgress } from "./ListenTimeProgress"
 
+import { Link } from "react-router-dom"
+
 
 export function TrackCard({ imageURL, id, name, listenCount, listenTime, maxTime}) {
 
@@ -9,9 +11,9 @@ export function TrackCard({ imageURL, id, name, listenCount, listenTime, maxTime
     <div className="TrackCard">
       <img src={imageURL} alt={name} />
 
-      <a href={"/track/"+id} className="TrackCard-Name">
+      <Link to={"/track/"+id} className="TrackCard-Name">
         {name}
-      </a>
+      </Link>
 
       <div className="Progress">
         <ListenTimeProgress time={listenTime} maxTime={maxTime} />

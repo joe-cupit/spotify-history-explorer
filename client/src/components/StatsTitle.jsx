@@ -12,7 +12,6 @@ export function StatsHeader({ imageURL, name, listened_ms, id }) {
 
   const [artistRank, setArtistRank] = useState(null);
 
-
   useEffect(() => {
     fetch(`/api/artist/${id}/rank`)
       .then((response) => response.json())
@@ -26,16 +25,28 @@ export function StatsHeader({ imageURL, name, listened_ms, id }) {
   return (
     <>
 
-    <div className="Stats-title">
+    <div className="stats-title">
+
       <img src={imageURL} alt={name} />
-      <div className="Stats-main">
-        <span className="Stats-title-name">{name}</span>
-        <div className="Stats-title-timeDiv">
-          Listened for<br/>
-          <span className="Stats-title-time">{millisecondsToReadableTime(listened_ms)}</span>
-          { artistRank && <Link to={"/artists?rank="+artistRank} className="Stats-title-rank"><RankBadge rank={artistRank} /></Link> }
-        </div>
-      </div>
+
+      <span className="stats-title-content">
+        <h1>{name}</h1>
+
+        <span className="stats-title-about">
+          <span>Listened for <br /> {millisecondsToReadableTime(listened_ms)}</span>
+
+          <span>
+            {artistRank
+              ? <Link to={"/artists?rank="+artistRank} className="stats-title-rank">
+                  <RankBadge rank={artistRank} />
+                </Link>
+              : null
+            }
+          </span>
+        </span>
+
+      </span>
+
     </div>
 
     </>

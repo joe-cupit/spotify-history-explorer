@@ -1,4 +1,4 @@
-.RankBadge {
+.rank-badge {
   width: 73px;
   height: 70px;
   line-height: 65px;
@@ -14,7 +14,7 @@
   cursor: pointer;
 }
 
-.RankBadge:hover {
+.rank-badge:hover {
   color: #efefef;
   background-color: #637498;
 }

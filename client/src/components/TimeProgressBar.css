@@ -4,10 +4,10 @@
   position: relative;
   justify-content: center;
   
-  width: 12rem;
+  min-width: 12rem;
   padding: .4rem 1rem;
 
-  background-color: #1b1e23;
+  background-color: #121418;
   border: solid #ddd .1rem;
   border-radius: .2rem;
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 // import { millisecondsToReadableTime } from "../assets/helper";
 
 import { StatsHeader } from "../components/StatsTitle";
-import { TopTracks } from "../components/TopTracks";
+import { BasicTopList } from "../components/BasicTopList"
 
 
 export function ArtistPage() {
@@ -32,7 +32,8 @@ export function ArtistPage() {
           id={id}
         />
 
-        <TopTracks artistId={id} limit={5} />
+        <h1>Top Tracks</h1>
+        <BasicTopList type={"track"} limit={5} />
       </>
     }
     </>

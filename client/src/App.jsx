@@ -9,7 +9,6 @@ import { SearchPage } from "./pages/search";
 
 import { ArtistPage } from "./pages/artist";
 import { ArtistsPage } from "./pages/artists";
-import { TopTracksPage } from "./pages/toptracks";
 
 import { TrackPage } from "./pages/track";
 import { TracksPage } from "./pages/tracks";
@@ -33,7 +32,6 @@ function App() {
           <Route path="/artist" element={<SearchPage searchType='artist' />} />
           <Route path="/artists" element={<ArtistsPage />} />
           <Route path="/artist/:id" element={<ArtistPage />} />
-          <Route path="/artist/:id/toptracks" element={<TopTracksPage />} />
 
           <Route path="/track" element={<SearchPage searchType='track' />} />
           <Route path="/tracks" element={<TracksPage />} />

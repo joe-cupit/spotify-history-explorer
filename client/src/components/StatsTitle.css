@@ -1,40 +1,35 @@
-.Stats-title {
+.stats-title {
+  display: flex;
+  justify-content: left;
+  gap: 1.5rem;
+  padding: 1rem;
+
   width: 80%;
-  height: 304px;
-  font-size: 1.5em;
+
+  font-size: 1.75rem;
 
   background-color: #20242a;
+}
 
-  margin-top: 50px;
-  padding: 10px;
+.stats-title img {
+  max-width: 20rem;
+  max-height: 20rem;
 }
-.Stats-title img {
-  float: left;
-  max-width: 300px;
-  max-height: 300px;
-  border: solid #14161a 2px;
+
+.stats-title-content {
+  align-self: last baseline;
+  padding-bottom: 1rem;
 }
-.Stats-main {
-  float: left;
-  padding-left: 1.5em;
-  padding-top: 70px;
-}
-.Stats-title-name {
-  font-size: 4em;
+
+.stats-title h1 {
+  font-size: 3em;
   font-weight: bold;
-}
-.Stats-title-timeDiv {
-  padding-top: 5px;
-
-}
-.Stats-title-time {
-  font-size: 2em;
-  font-weight: bold;
-  float: left;
+  padding: 0;
+  margin: 0;
 }
 
-.Stats-title-rank {
-  margin-left: 50px;
-  float: left;
-  cursor: pointer;
+.stats-title-about {
+  display: flex;
+  justify-content: left;
+  gap: 2.5rem;
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { SearchResult } from "../components/SearchResult";
+import { Link } from "react-router-dom"
 
 
 export function SearchPage({searchType}) {
@@ -37,5 +37,15 @@ export function SearchPage({searchType}) {
     <input type="text" placeholder={searchType + " name"} onChange={(e) => setSearchTerm(e.target.value)}></input>
     {searchResults && presentResults(searchResults)}
     </>
+  )
+}
+
+
+function SearchResult(props) {
+
+  return (
+      <>
+      <Link to={`/${props.type}/${props.id}`}>{props.name}</Link>
+      </>
   )
 }

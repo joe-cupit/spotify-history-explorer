@@ -27,7 +27,7 @@ export function BasicTopList({ type, limit }) {
         {topList
           ? topList.map((item, index) => {
             return (
-              <ArtistCard
+              <ItemCard
                 item={item}
                 type={type}
                 longestListen={topList[0].totalListeningTime}
@@ -36,38 +36,49 @@ export function BasicTopList({ type, limit }) {
               />
             )
             })
-          : ""
+          : [...Array(limit)].map((_, i) => <ItemCard key={i} />)
         }
       </ul>
+
+      <div className="view-all">
+        {limit ? <Link to={`/${type}s/all`}>view more...</Link> : null}
+      </div>
     </div>
-    <span>
-      {limit ? <Link to={`/${type}s/all`} className="view-all">view more...</Link> : null}
-    </span>
     </>
   )
 }
 
 
-function ArtistCard({ item, type, longestListen }) {
+function ItemCard({ item, type, longestListen }) {
   return (
-    <>
     <li>
-      <span className="top-list-stats">
-        <img src={item.imageURL} alt={item.name} />
+      
+      {item ?
+      <>
+        <span className="top-list-stats">
+          <div className="top-list-image">
+            <img src={item.imageURL} alt={item.name} />
+          </div>
 
-        <span>
-          <Link to={`/${type}/${item.spotifyId}`}>{item.name}</Link>
-          <br/>
           <span>
-            {item.totalListeningCount} total listens 
-            ({item.skippedCount} skipped)
+            <Link to={`/${type}/${item.spotifyId}`}>{item.name}</Link>
+            <br/>
+            <span>
+              {item.totalListeningCount} total listen{item.totalListeningCount !== 1 && "s"} ({item.skippedCount} skipped)
+            </span>
           </span>
         </span>
-      </span>
 
-      <TimeProgressBar time={item.totalListeningTime} maxTime={longestListen} />
-
+        <TimeProgressBar time={item.totalListeningTime} maxTime={longestListen} />
+      </>
+      :
+      <>
+        <span className="top-list-stats">
+          <div className="top-list-image"></div>
+        </span>
+      </>
+      }
+      
     </li>
-    </>
   )
 }

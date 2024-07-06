@@ -46,7 +46,7 @@ export function RankBadge({ rank }) {
     };
 
     return (
-      <div style={rankStyle} className="RankBadge">
+      <div style={rankStyle} className="rank-badge">
         {rankText}
       </div>
     )

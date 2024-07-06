@@ -2,9 +2,27 @@ const spotifyAccess = require('../spotify/apiAccess');
 const databaseAccesss = require('../../dbaccess/databaseAccess');
 
 
-exports.artists = async (req, res) => {
-  const mongoArtistList = await databaseAccesss.getArtistsOrderByTimeListened();
-  res.send(mongoArtistList);
+exports.toplist = async (req, res) => {
+  const type = req.params.type;
+  const limit = req.params.limit;
+
+  var mongoTopList = null;
+  switch (type) {
+    case "artist":
+      mongoTopList = await databaseAccesss.getArtistsOrderByTimeListened(limit);
+      break;
+    case "track":
+      mongoTopList = await databaseAccesss.getTracksOrderByTimeListened(limit);
+      break;
+    case "album":
+      mongoTopList = await databaseAccesss.getAlbumsOrderByTimeListened(limit);
+      break;
+    case "show":
+      mongoTopList = await databaseAccesss.getShowsOrderByTimeListened(limit);
+      break;
+  }
+
+  res.send(mongoTopList);
 }
 
 

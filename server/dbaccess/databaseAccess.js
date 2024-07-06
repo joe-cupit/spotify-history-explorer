@@ -154,12 +154,19 @@ exports.getArtistRank = async function(artistId) {
 }
 
 
-exports.getArtistsOrderByTimeListened = async function() {
-  console.log('[MongoDB] Getting all artists');
-
+exports.getArtistsOrderByTimeListened = async function(limit) {
+  console.log('[MongoDB] Getting top artists');
+  var artistData = null;
   try {
-    const artistData = await models.Artist.find({})
-      .sort({ totalListeningTime: -1 });
+    if (limit) {
+      artistData = await models.Artist.find({})
+        .sort({ totalListeningTime: -1 })
+        .limit(limit);
+    }
+    else {
+      artistData = await models.Artist.find({})
+        .sort({ totalListeningTime: -1 });
+    }
     return artistData;
   } catch (err) {
     console.log('[MongoDB] Error getting all artists');
@@ -168,3 +175,68 @@ exports.getArtistsOrderByTimeListened = async function() {
   }
 }
 
+
+exports.getTracksOrderByTimeListened = async function(limit) {
+  console.log('[MongoDB] Getting top tracks');
+  var trackData = null;
+  try {
+    if (limit) {
+      trackData = await models.Track.find({})
+        .sort({ totalListeningTime: -1 })
+        .limit(limit);
+    }
+    else {
+      trackData = await models.Track.find({})
+        .sort({ totalListeningTime: -1 });
+    }
+    return trackData;
+  } catch (err) {
+    console.log('[MongoDB] Error getting top tracks');
+    console.log('[MongoDB]', err);
+    return null;
+  }
+}
+
+
+exports.getAlbumsOrderByTimeListened = async function(limit) {
+  console.log('[MongoDB] Getting top albums');
+  var albumData = null;
+  try {
+    if (limit) {
+      albumData = await models.Album.find({})
+        .sort({ totalListeningTime: -1 })
+        .limit(limit);
+    }
+    else {
+      albumData = await models.Album.find({})
+        .sort({ totalListeningTime: -1 });
+    }
+    return albumData;
+  } catch (err) {
+    console.log('[MongoDB] Error getting all albums');
+    console.log('[MongoDB]', err);
+    return null;
+  }
+}
+
+
+exports.getShowsOrderByTimeListened = async function(limit) {
+  console.log('[MongoDB] Getting top shows');
+  var showData = null;
+  try {
+    if (limit) {
+      showData = await models.Show.find({})
+        .sort({ totalListeningTime: -1 })
+        .limit(limit);
+    }
+    else {
+      showData = await models.Show.find({})
+        .sort({ totalListeningTime: -1 });
+    }
+    return showData;
+  } catch (err) {
+    console.log('[MongoDB] Error getting top shows');
+    console.log('[MongoDB]', err);
+    return null;
+  }
+}

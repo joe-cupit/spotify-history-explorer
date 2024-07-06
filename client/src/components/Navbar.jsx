@@ -13,7 +13,7 @@ export function Navbar() {
             <CustomLink to={'/artists'}>Artists</CustomLink>
             <CustomLink to={'/tracks'}>Tracks</CustomLink>
             <CustomLink to={'/albums'}>Albums</CustomLink>
-            <CustomLink to={'/podcasts'}>Podcasts</CustomLink>
+            <CustomLink to={'/shows'}>Shows</CustomLink>
           </ul>
         </span>
 

@@ -1,0 +1,30 @@
+
+.time-progress-bar {
+  display: inline-flex;
+  position: relative;
+  justify-content: center;
+  
+  width: 12rem;
+  padding: .4rem 1rem;
+
+  background-color: #1b1e23;
+  border: solid #ddd .1rem;
+  border-radius: .2rem;
+
+  cursor: default;
+}
+
+.time-progress-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+}
+
+.time-progress-text {
+  color: white;
+  mix-blend-mode: difference;
+}
+

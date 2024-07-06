@@ -6,18 +6,28 @@ import { Link } from "react-router-dom";
 import { TimeProgressBar } from "./TimeProgressBar";
 
 
-export function BasicTopList({ type, limit }) {
+export function BasicTopList({ type, limit, artistId }) {
 
   const [topList, setTopList] = useState(null);
 
   useEffect(() => {
-    fetch(`/api/toplist/${type}/${limit}`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setTopList(data);
-      });
-  }, [type, limit]);
+    console.log(artistId)
+    if (artistId) {
+      fetch(`/api/artist/${artistId}/toptracks/${limit}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setTopList(data);
+        });
+    } else {
+      fetch(`/api/toplist/${type}/${limit}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setTopList(data);
+        });
+    }
+  }, [artistId, type, limit]);
 
 
   return (
@@ -52,7 +62,7 @@ export function BasicTopList({ type, limit }) {
 function ItemCard({ item, type, longestListen }) {
   return (
     <li>
-      
+
       {item ?
       <>
         <span className="top-list-stats">

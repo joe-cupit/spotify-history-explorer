@@ -31,9 +31,11 @@
 .top-list ul a {
   font-size: 1.75em;
   font-weight: bold;
+
+  transition-duration: .1s;
 }
 .top-list ul a:hover {
-  color: #e1dada;
+  color: #d0d6e4;
 }
 
 .top-list-image {

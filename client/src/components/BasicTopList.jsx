@@ -19,7 +19,7 @@ export function BasicTopList({ type, limit, artistId }) {
           console.log(data);
           setTopList(data);
         });
-    } else {
+    } else if (type) {
       fetch(`/api/toplist/${type}/${limit}`)
         .then((response) => response.json())
         .then((data) => {

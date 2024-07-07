@@ -30,7 +30,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
 
           <Route path="/artist" element={<SearchPage searchType='artist' />} />
-          <Route path="/artists" element={<ArtistsPage />} />
+          <Route path="/artists/*" element={<ArtistsPage />} />
           <Route path="/artist/:id" element={<ArtistPage />} />
 
           <Route path="/track" element={<SearchPage searchType='track' />} />

@@ -29,11 +29,11 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
 
-          <Route path="/artist" element={<SearchPage searchType='artist' />} />
+          <Route path="/search" element={<SearchPage />} />
+
           <Route path="/artists/*" element={<ArtistsPage />} />
           <Route path="/artist/:id" element={<ArtistPage />} />
 
-          <Route path="/track" element={<SearchPage searchType='track' />} />
           <Route path="/tracks" element={<TracksPage />} />
           <Route path="/track/:id" element={<TrackPage />} />
 

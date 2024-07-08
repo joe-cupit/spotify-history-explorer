@@ -47,12 +47,12 @@ getEpisode = async function(episodeId) {
 }
 
 
-searchFor = async function(term, type) {
-  console.log(`[Spotify] Searching ${type}s for '${term}'`);
+searchFor = async function(term, types, limit) {
+  console.log(`[Spotify] Searching for '${term}'`);
 
   try {
-    response = await spotifyApi.search(term, [type], { limit: 10 , market: 'GB' });
-    return response.body[type+'s'].items;
+    response = await spotifyApi.search(term, types, { limit: limit , market: 'GB' });
+    return response.body;
   } catch (err) {
     processError(err);
     return null;

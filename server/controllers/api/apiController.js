@@ -110,18 +110,12 @@ exports.track = async (req, res) => {
 
 
 exports.search = async (req, res) => {
-  var type = req.params.type;
+  var types = req.params.types.split("+");
   var term = req.params.term;
+  var limit = req.params.limit;
 
-  const validSearchTypes = new Set(['artist', 'track', 'album', 'episode']);
-
-  if (validSearchTypes.has(type)) {
-    const spotifySearchResult = await spotifyAccess.searchFor(term, [type]);
-    res.json(spotifySearchResult);
-  } else {
-    console.log(`[Spotify] Invalid search type: '${type}'`);
-    res.send({});
-  }
+  const spotifySearchResult = await spotifyAccess.searchFor(term, types, limit);
+  res.json(spotifySearchResult);
 };
 
 

@@ -17,7 +17,8 @@ route.get('/artist/:id/rank', apiController.getArtistRank);
 route.get('/artist/:id/toptracks/:limit', apiController.getTopTracksByArtist)
 
 route.get('/track/:id', apiController.track);
-route.get('/search/:type/:term', apiController.search);
+
+route.get('/search/:types/:term/:limit', apiController.search);
 
 
 // Export router

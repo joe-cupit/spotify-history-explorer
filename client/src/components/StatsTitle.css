@@ -11,14 +11,21 @@
   background-color: #20242a;
 }
 
-.stats-title img {
+.stats-title-image {
+  min-width: 15rem;
+  min-height: 15rem;
   max-width: 15rem;
   max-height: 15rem;
+  background-color: rgb(26, 26, 27);
+}
+.stats-title-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .stats-title-content {
   align-self: last baseline;
-  padding-bottom: 1rem;
 }
 
 .stats-title h1 {
@@ -26,6 +33,23 @@
   font-weight: bold;
   padding: 0;
   margin: 0;
+}
+.stats-title h2 {
+  font-size: 1.3em;
+  font-weight: normal;
+  color: #eee;
+
+  display: inline;
+  padding: .3rem 0;
+  margin: 0;
+}
+.stats-title h2 a {
+  border-radius: .3rem;
+  transition-duration: .1s;
+}
+.stats-title h2 a:hover {
+  color: #fff;
+  text-decoration: underline;
 }
 
 .stats-title-about {

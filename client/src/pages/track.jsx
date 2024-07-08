@@ -32,6 +32,7 @@ export function TrackPage() {
         imageURL={trackData.imageURL}
         name={trackData.name}
         listened_ms={trackData.totalListeningTime}
+        artistIds={trackData.artists}
       />
     }
     </>

@@ -1,50 +1,59 @@
 import "./StatsTitle.css";
 
-import { useEffect, useState } from "react";
-
 import { millisecondsToReadableTime } from "../assets/helper";
 import { Link } from "react-router-dom";
 
 import { RankBadge } from "./RankBadge";
 
 
-export function StatsHeader({ imageURL, name, listened_ms, id }) {
-
-  const [artistRank, setArtistRank] = useState(null);
-
-  useEffect(() => {
-    fetch(`/api/artist/${id}/rank`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setArtistRank(data.artistRank);
-      });
-  }, [id]);
-
+export function StatsHeader({ imageURL, name, listened_ms, rank, artistIds }) {
 
   return (
     <>
 
     <div className="stats-title">
 
-      <img src={imageURL} alt={name} />
+      <div className="stats-title-image">
+        {imageURL && <img src={imageURL} alt={name} />}
+      </div>
 
       <span className="stats-title-content">
-        <h1>{name}</h1>
+        {name ?
+          <>
+            <h1>{name}</h1>
 
-        <span className="stats-title-about">
-          <span>Listened for <br /> {millisecondsToReadableTime(listened_ms)}</span>
+            <span className="stats-title-about">
+              {artistIds ?
+                <h2>
+                  by&nbsp;
+                  {artistIds.map((artistId, index) => {
+                    return (
+                      <Link key={index} to={"/artist/"+artistId}>
+                        {artistId}
+                      </Link>
+                    )
+                  })}
+                </h2>
+               :
+                <>
+                  <span>Listened for <br /> {millisecondsToReadableTime(listened_ms)}</span>
 
-          <span>
-            {artistRank
-              ? <Link to={"/artists/all?rank="+artistRank} className="stats-title-rank">
-                  <RankBadge rank={artistRank} />
-                </Link>
-              : null
-            }
-          </span>
-        </span>
-
+                  <span>
+                    {rank
+                      ? <Link to={"/artists/all?rank="+rank} className="stats-title-rank">
+                          <RankBadge rank={rank} />
+                        </Link>
+                      : null
+                    }
+                  </span>
+                </>
+              }
+            </span>
+          </> :
+          <>
+            <h1>loading data...</h1>
+          </>
+        }
       </span>
 
     </div>

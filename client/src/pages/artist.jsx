@@ -11,7 +11,6 @@ export function ArtistPage() {
   const {id} = useParams();
 
   const [artistData, setArtistData] = useState(null);
-
   useEffect(() => {
     fetch(`/api/artist/${id}`)
       .then((response) => response.json())
@@ -23,19 +22,21 @@ export function ArtistPage() {
 
   return (
     <>
-    {artistData &&
-      <>
-        <StatsHeader
-          imageURL={artistData.imageURL}
-          name={artistData.name}
-          listened_ms={artistData.totalListeningTime}
-          id={id}
-        />
 
-        <h1>Top Tracks</h1>
-        <BasicTopList type={"track"} limit={5} artistId={artistData.spotifyId} />
-      </>
-    }
+      <StatsHeader
+        imageURL={artistData && artistData.imageURL}
+        name={artistData && artistData.name}
+        listened_ms={artistData && artistData.totalListeningTime}
+        rank={artistData && artistData.rank}
+      />
+
+      <h1>Top Tracks</h1>
+      <BasicTopList
+        type={"track"}
+        limit={5}
+        topList={artistData && artistData.topTracks}
+      />
+
     </>
   )
 }

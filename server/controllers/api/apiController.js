@@ -37,10 +37,11 @@ exports.artist = async (req, res) => {
     return;
   }
 
+  var resultJson = {};
 
   if (mongoArtistData.name && mongoArtistData.imageURL
       && mongoArtistData.followers && mongoArtistData.popularity) {
-    res.send(mongoArtistData);
+    resultJson = JSON.parse(JSON.stringify(mongoArtistData));
   } else {
     const spotifyArtistData = await spotifyAccess.getArtist(id);
 
@@ -59,9 +60,16 @@ exports.artist = async (req, res) => {
       skippedCount: mongoArtistData.skippedCount
     };
 
-    res.send(Object.assign({}, spotifyJson, databaseJson));
+    resultJson = Object.assign({}, spotifyJson, databaseJson);
   }
 
+  const mongoTopTracks = await databaseAccesss.getTopTracksByArtist(id, 5);
+  resultJson.topTracks = mongoTopTracks;
+
+  const artistRank = await databaseAccesss.getArtistRank(id);
+  resultJson.rank = artistRank;
+
+  res.send(resultJson);  
 };
 
 

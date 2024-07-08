@@ -1,34 +1,10 @@
 import "./BasicTopList.css"
 
-import { useEffect, useState } from "react";
-
 import { Link } from "react-router-dom";
 import { TimeProgressBar } from "./TimeProgressBar";
 
 
-export function BasicTopList({ type, limit, artistId }) {
-
-  const [topList, setTopList] = useState(null);
-
-  useEffect(() => {
-    console.log(artistId)
-    if (artistId) {
-      fetch(`/api/artist/${artistId}/toptracks/${limit}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          setTopList(data);
-        });
-    } else if (type) {
-      fetch(`/api/toplist/${type}/${limit}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          setTopList(data);
-        });
-    }
-  }, [artistId, type, limit]);
-
+export function BasicTopList({ type, limit, topList }) {
 
   return (
     <>

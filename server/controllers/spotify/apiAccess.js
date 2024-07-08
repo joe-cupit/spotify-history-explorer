@@ -18,10 +18,38 @@ getArtist = async function(artistId) {
   }
 }
 
+getAlbum = async function(albumId) {
+  console.log('[Spotify] Finding album with id', albumId);
+  try {
+    response = await spotifyApi.getAlbum(albumId);
+    return response.body;
+  } catch (err) {
+    processError(err);
+    return null;
+  } finally {
+    spotifyController.addApiCalls(1);
+    await sleep(200);
+  }
+}
+
 getTrack = async function(trackId) {
   console.log('[Spotify] Finding track with id', trackId);
   try {
     response = await spotifyApi.getTrack(trackId);
+    return response.body;
+  } catch (err) {
+    processError(err);
+    return null;
+  } finally {
+    spotifyController.addApiCalls(1);
+    await sleep(200);
+  }
+}
+
+getShow = async function(showId) {
+  console.log('[Spotify] Finding show with id', showId);
+  try {
+    response = await spotifyApi.getShow(showId);
     return response.body;
   } catch (err) {
     processError(err);
@@ -65,7 +93,9 @@ searchFor = async function(term, types, limit) {
 
 module.exports = {
   getArtist,
+  getAlbum,
   getTrack,
+  getShow,
   getEpisode,
   
   searchFor

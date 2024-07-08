@@ -11,7 +11,7 @@ export function BasicTopList({ type, limit, topList }) {
     <div className="top-list">
       <ul>
         {topList
-          ? topList.map((item, index) => {
+          ? topList.slice(0, limit).map((item, index) => {
             return (
               <ItemCard
                 item={item}
@@ -26,9 +26,9 @@ export function BasicTopList({ type, limit, topList }) {
         }
       </ul>
 
-      <div className="view-all">
+      {/* <div className="view-all">
         {limit ? <Link to={`/${type}s/all`}>view more...</Link> : null}
-      </div>
+      </div> */}
     </div>
     </>
   )

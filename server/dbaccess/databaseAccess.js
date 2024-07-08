@@ -104,6 +104,18 @@ exports.getArtistById = async function(artistId) {
   }
 }
 
+exports.getAlbumById = async function(albumId) {
+  console.log('[MongoDB] Retrieving album with id', albumId);
+  try {
+    const albumData = await models.Album.findOne({ spotifyId: albumId });
+    return albumData;
+  } catch (err) {
+    console.log('[MongoDB] Error finding album');
+    console.log('[MongoDB]', err);
+    return null;
+  }
+}
+
 exports.getTrackById = async function(trackId) {
   console.log('[MongoDB] Retrieving track with id', trackId);
   try {
@@ -111,6 +123,18 @@ exports.getTrackById = async function(trackId) {
     return trackData;
   } catch (err) {
     console.log('[MongoDB] Error finding track');
+    console.log('[MongoDB]', err);
+    return null;
+  }
+}
+
+exports.getShowById = async function(showId) {
+  console.log('[MongoDB] Retrieving show with id', showId);
+  try {
+    const showData = await models.Show.findOne({ spotifyId: showId });
+    return showData;
+  } catch (err) {
+    console.log('[MongoDB] Error finding show');
     console.log('[MongoDB]', err);
     return null;
   }
@@ -137,6 +161,26 @@ exports.getTopTracksByArtist = async function(artistId, limit) {
   }
 }
 
+exports.getTopEpisodesByShow = async function(showId, limit) {
+  console.log('[MongoDB] Getting top episodes for show with id', showId);
+  var topTracks = null;
+  try {
+    if (limit) {
+      topTracks = await models.Episode.find({ showId: showId })
+        .sort({ totalListeningTime: -1 })
+        .limit(limit);
+    } else {
+      topTracks = await models.Episode.find({ showId: showId })
+        .sort({ totalListeningTime: -1 });
+    }
+    return topTracks;
+  } catch (err) {
+    console.log('[MongoDB] Error finding top episodes');
+    console.log('[MongoDB]', err);
+    return null;
+  }
+}
+
 
 exports.getArtistRank = async function(artistId) {
   console.log('[MongoDB] Getting rank for artist with id', artistId);
@@ -144,6 +188,21 @@ exports.getArtistRank = async function(artistId) {
   try {
     const artistData = await models.Artist.findOne({ spotifyId: artistId }, 'totalListeningTime');
     const rank = await models.Artist.find({totalListeningTime: { "$gt": artistData.totalListeningTime }}).count();
+
+    return rank+1;
+  } catch (err) {
+    console.log('[MongoDB] Error finding rank');
+    console.log('[MongoDB]', err);
+    return null;
+  }
+}
+
+exports.getShowRank = async function(showId) {
+  console.log('[MongoDB] Getting rank for show with id', showId);
+
+  try {
+    const artistData = await models.Show.findOne({ spotifyId: showId }, 'totalListeningTime');
+    const rank = await models.Show.find({totalListeningTime: { "$gt": artistData.totalListeningTime }}).count();
 
     return rank+1;
   } catch (err) {

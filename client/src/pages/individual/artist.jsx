@@ -1,10 +1,8 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-// import { millisecondsToReadableTime } from "../assets/helper";
-
-import { StatsHeader } from "../components/StatsTitle";
-import { BasicTopList } from "../components/BasicTopList"
+import { StatsHeader } from "../../components/StatsTitle";
+import { BasicTopList } from "../../components/BasicTopList";
 
 
 export function ArtistPage() {

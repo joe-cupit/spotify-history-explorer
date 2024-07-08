@@ -25,10 +25,6 @@ export function BasicTopList({ type, limit, topList }) {
           : [...Array(limit)].map((_, i) => <ItemCard key={i} />)
         }
       </ul>
-
-      {/* <div className="view-all">
-        {limit ? <Link to={`/${type}s/all`}>view more...</Link> : null}
-      </div> */}
     </div>
     </>
   )
@@ -42,9 +38,13 @@ function ItemCard({ item, type, longestListen }) {
       {item ?
       <>
         <span className="top-list-stats">
-          <div className="top-list-image">
-            <img src={item.imageURL} alt={item.name} />
-          </div>
+          <Link
+            to={`https://open.spotify.com/${type}/${item.spotifyId}`}
+            target="_blank">
+              <div className="top-list-image">
+                <img src={item.imageURL} alt={item.name} />
+              </div>
+          </Link>
 
           <span>
             <Link to={`/${type}/${item.spotifyId}`}>{item.name}</Link>

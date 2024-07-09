@@ -1,10 +1,15 @@
 import "./BasicTopList.css"
 
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+
 import { TimeProgressBar } from "./TimeProgressBar";
 
 
-export function BasicTopList({ type, limit, topList }) {
+export function BasicTopList({ type, limit, topList, rank }) {
+
+  const [serachParams, setSearchParams] = useSearchParams();
+
+  rank = parseInt(rank);
 
   return (
     <>
@@ -17,6 +22,9 @@ export function BasicTopList({ type, limit, topList }) {
                 item={item}
                 type={type}
                 longestListen={topList[0].totalListeningTime}
+                active={(rank === (index+1))}
+
+                onClick={() => {setSearchParams({'rank': index+1})}}
 
                 key={index}
               />
@@ -31,9 +39,10 @@ export function BasicTopList({ type, limit, topList }) {
 }
 
 
-function ItemCard({ item, type, longestListen }) {
+function ItemCard({ item, type, longestListen, active, onClick }) {
+  
   return (
-    <li>
+    <li className={ active ? "selected-item" : "" }>
 
       {item ?
       <>
@@ -47,8 +56,17 @@ function ItemCard({ item, type, longestListen }) {
           </Link>
 
           <span>
-            <Link to={`/${type}/${item.spotifyId}`}>{item.name}</Link>
+            <Link to={`/${type}/${item.spotifyId}`}>
+              <h1 onClick={onClick}>{item.name}</h1>
+            </Link>
             <br/>
+
+            {/* {type === 'track' &&
+            <>
+              by <Link to={`/artist/${item.artists[0]}`}><h2>{item.artists[0]}</h2></Link>
+              <br/>
+            </>} */}
+
             <span>
               {item.totalListeningCount} total listen{item.totalListeningCount !== 1 && "s"} ({item.skippedCount} skipped)
             </span>

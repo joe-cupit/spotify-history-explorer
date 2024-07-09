@@ -1,17 +1,25 @@
 import "./overview.css"
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { BasicTopList } from "../components/BasicTopList"
 
 
 export function OverviewPage({ category }) {
 
+  const [serachParams, setSearchParams] = useSearchParams();
+  const rank = serachParams.get('rank');
+
   const [limit, setLimit] = useState(5);
   const [topList, setTopList] = useState(null);
 
   useEffect(() => {
-    setLimit(5);
+    if (rank) {
+      setLimit((Math.ceil(rank/5))*5);
+    } else {
+      setLimit(5);
+    }
     setTopList(null);
   }, [category])
 
@@ -21,6 +29,7 @@ export function OverviewPage({ category }) {
       .then((data) => {
         console.log(data);
         setTopList(data);
+        setTimeout(scrollTo, 50);
       });
   }, [category]);
 
@@ -32,6 +41,15 @@ export function OverviewPage({ category }) {
     });
   }
 
+  const changeLimit = function(change) {
+    setLimit(limit+change);
+
+    serachParams.delete('rank');
+    setSearchParams(serachParams);
+
+    setTimeout(scrollTo, 50);
+  }
+
   return (
     <>
       <div className="stats-page-container">
@@ -41,14 +59,23 @@ export function OverviewPage({ category }) {
             type={category}
             limit={limit}
             topList={topList}
+            rank={rank}
           />
           {topList &&
             <div className="view-control">
               {(limit > 5) ?
-                <span  id="view-less" onClick={() => {setLimit(limit-5)}}>view less</span>
+                <span
+                  id="view-less"
+                  onClick={() => {changeLimit(-5)}}>
+                    view less
+                </span>
                 : <span></span>}
               {(limit <= topList.length) ?
-                <span id="view-more" onClick={() => {setLimit(limit+5); setTimeout(scrollTo, 50);}}>view more</span>
+                <span
+                  id="view-more"
+                  onClick={() => {changeLimit(+5)}}>
+                    view more
+                </span>
                 : <span></span>}
             </div>          
           }

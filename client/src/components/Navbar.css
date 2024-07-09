@@ -8,6 +8,10 @@
   align-items: stretch;
   gap: 2rem;
   padding: .5rem 1rem;
+
+  position: sticky;
+  top: 0;
+  z-index: calc(infinity);
 }
 
 .nav-left {

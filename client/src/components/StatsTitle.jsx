@@ -40,7 +40,7 @@ export function StatsHeader({ imageURL, name, listened_ms, rank, artistIds }) {
 
                   <span>
                     {rank
-                      ? <Link to={"/artists/all?rank="+rank} className="stats-title-rank">
+                      ? <Link to={"/artists?rank="+rank} className="stats-title-rank">
                           <RankBadge rank={rank} />
                         </Link>
                       : null

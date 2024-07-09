@@ -11,8 +11,8 @@ export function Navbar() {
           <Link to={'/'} className="nav-title">Spotify History</Link>
           <ul>
             <CustomLink to={'/artists'}>Artists</CustomLink>
-            <CustomLink to={'/tracks'}>Tracks</CustomLink>
             <CustomLink to={'/albums'}>Albums</CustomLink>
+            <CustomLink to={'/tracks'}>Tracks</CustomLink>
             <CustomLink to={'/shows'}>Shows</CustomLink>
           </ul>
         </span>

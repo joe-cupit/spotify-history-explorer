@@ -51,7 +51,9 @@ export function SearchPage() {
             onChange={(e) => setSearchTerm(e.target.value)}>
           </input>
         </div>
-        <SearchPageResults filters={filters} searchResults={searchResults} />
+        {searchTerm &&
+          <SearchPageResults filters={filters} searchResults={searchResults} />
+        }
       </div>
     </div>
 

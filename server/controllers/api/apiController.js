@@ -230,3 +230,12 @@ exports.getArtistRank = async (req, res) => {
   const artistRank = await databaseAccesss.getArtistRank(artistId);
   res.send({ artistRank: artistRank });
 }
+
+
+
+
+exports.homepage = async (req, res) => {
+  const totalTime = await databaseAccesss.getTotalTime();
+  
+  res.send({totalTime: totalTime});
+}

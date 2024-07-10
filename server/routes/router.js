@@ -22,6 +22,8 @@ route.get('/show/:id', apiController.show);
 
 route.get('/search/:types/:term/:limit', apiController.search);
 
+route.get('/homepage', apiController.homepage);
+
 
 // Export router
 module.exports = route

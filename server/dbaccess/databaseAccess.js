@@ -299,3 +299,9 @@ exports.getShowsOrderByTimeListened = async function(limit) {
     return null;
   }
 }
+
+
+exports.getTotalTime = async function() {
+  timeData = await models.History.aggregate([{$group: {_id:null, sum:{$sum:"$listenedFor"}}}])
+  return timeData[0].sum;
+}

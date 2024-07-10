@@ -59,10 +59,14 @@
 }
 
 .top-list-image {
-  min-width: 6rem;
-  min-height: 6rem;
-  max-width: 6rem;
-  max-height: 6rem;
+  min-width: 5rem;
+  min-height: 5rem;
+  max-width: 5rem;
+  max-height: 5rem;
+
+  border-radius: .5rem;
+  overflow: hidden;
+
   background-color: rgb(26, 26, 27);
 }
 .top-list-image img {

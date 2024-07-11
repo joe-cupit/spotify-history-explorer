@@ -3,18 +3,25 @@ import "./search.css"
 import { useSessionStorage } from "../hooks/useSessionStorage";
 import { useSpotifySearch } from "../hooks/useSpotifySearch";
 
-import { Link } from "react-router-dom"
+import { useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom"
 
 
 export function SearchPage() {
 
+  const [serachParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useSessionStorage("search-term", "");
   const [filters, setFilters] = useSessionStorage("filters", {
     "artist": true, "album": true, "track": true, "show": false
   });
-  const [searchResults, setSearchResults] = useSpotifySearch(searchTerm);
+  const searchResults = useSpotifySearch(searchTerm);
 
   const typeList = ["artist", "album", "track", "show"];
+
+  useEffect(() => {
+    let term = serachParams.get('term');
+    setSearchTerm(term);
+  })
 
   const handleFilterChange = (e) => {
     setFilters({

@@ -23,5 +23,5 @@ export const useSpotifySearch = (searchTerm) => {
 
   }, [searchTerm]);
 
-  return [searchResults, setSearchResults];
+  return searchResults;
 }

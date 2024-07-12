@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { StatsHeader } from "../../components/StatsTitle";
+import { BasicTopList } from "../../components/BasicTopList";
 
 
 export function AlbumPage() {
@@ -24,6 +25,13 @@ export function AlbumPage() {
         name={albumData && albumData.name}
         listened_ms={albumData && albumData.totalListeningTime}
         artistIds={albumData && albumData.artists}
+        artistNames={albumData && albumData.artistNames}
+      />
+
+      <BasicTopList
+        type={"track"}
+        limit={albumData ? albumData.totalTracks : 5}
+        topList={albumData && albumData.tracks}
       />
     </>
   )

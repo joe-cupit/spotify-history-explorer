@@ -20,10 +20,11 @@ export function TrackPage() {
   return (
     <>
       <StatsHeader
-        imageURL={trackData && trackData.imageURL}
-        name={trackData && trackData.name}
-        listened_ms={trackData && trackData.totalListeningTime}
-        artistIds={trackData && trackData.artists}
+        imageURL={trackData?.imageURL}
+        name={trackData?.name}
+        listened_ms={trackData?.totalListeningTime}
+        artistIds={trackData?.artistIds}
+        artistNames={trackData?.artistNames}
       />
     </>
   )

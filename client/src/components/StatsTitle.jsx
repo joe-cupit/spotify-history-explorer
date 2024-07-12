@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { RankBadge } from "./RankBadge";
 
 
-export function StatsHeader({ imageURL, name, listened_ms, rank, artistIds }) {
+export function StatsHeader({ imageURL, name, listened_ms, rank, artistIds, artistNames }) {
 
   return (
     <>
@@ -28,9 +28,12 @@ export function StatsHeader({ imageURL, name, listened_ms, rank, artistIds }) {
                   by&nbsp;
                   {artistIds.map((artistId, index) => {
                     return (
-                      <Link key={index} to={"/artist/"+artistId}>
-                        {artistId}
+                      <span key={index}>
+                      <Link to={"/artist/"+artistId}>
+                        {artistNames ? artistNames[index] : artistId}
                       </Link>
+                      {index+1 < artistIds.length && <>,&nbsp;</>}
+                      </span>
                     )
                   })}
                 </h2>

@@ -84,22 +84,18 @@ exports.album = async (req, res) => {
     return;
   }
 
+  const spotifyAlbumData = await spotifyAccess.getAlbum(id);
 
-  if (mongoAlbumData.name && mongoAlbumData.artists
+  if (!(mongoAlbumData.name && mongoAlbumData.artists
       && mongoAlbumData.imageURL && mongoAlbumData.totalTracks
-      && mongoAlbumData.releaseDate && mongoAlbumData.albumType) {
-    
-    res.send(mongoAlbumData);
-  } else {
-    const spotifyTrackData = await spotifyAccess.getAlbum(id);
-
+      && mongoAlbumData.releaseDate && mongoAlbumData.albumType)) {
     const spotifyJson = {
-      name: spotifyTrackData.name,
-      artists: spotifyTrackData.artists,
-      imageURL: spotifyTrackData.images[0].url,
-      totalTracks: spotifyTrackData.total_tracks,
-      releaseDate: spotifyTrackData.release_date,
-      albumType: spotifyTrackData.album_type
+      name: spotifyAlbumData.name,
+      artists: [spotifyAlbumData.artists[0].id],
+      imageURL: spotifyAlbumData.images[0].url,
+      totalTracks: spotifyAlbumData.total_tracks,
+      releaseDate: spotifyAlbumData.release_date,
+      albumType: spotifyAlbumData.album_type
     };
     databaseAccesss.addOrUpdateAlbum({ spotifyId: id }, spotifyJson);
 
@@ -109,10 +105,20 @@ exports.album = async (req, res) => {
       listenTime: mongoAlbumData.totalListeningTime,
       skippedCount: mongoAlbumData.skippedCount
     };
-
-    res.send(Object.assign({}, spotifyJson, databaseJson));
+  
+    albumJson = Object.assign({}, spotifyJson, databaseJson);
+  } else {
+    albumJson = JSON.parse(JSON.stringify(mongoAlbumData));
   }
 
+  albumJson.tracks = []
+  for (let track of spotifyAlbumData.tracks.items) {
+    let mongoTrackData = await databaseAccesss.getTrackById(track.id);
+    albumJson.tracks.push(mongoTrackData);
+  }
+  
+  albumJson.artistNames = [spotifyAlbumData.artists[0].name];
+  res.send(albumJson);
 };
 
 
@@ -122,13 +128,38 @@ exports.track = async (req, res) => {
   const mongoTrackData = await databaseAccesss.getTrackById(id);
 
   if (!mongoTrackData) {
-    // deal with never listened to.
-    res.send({});
+    const spotifyTrackData = await spotifyAccess.getTrack(id);
+
+    var artistIds = []; var artistNames = [];
+    for (let artist of spotifyTrackData.artists) {
+      artistIds.push(artist.id);
+      artistNames.push(artist.name);
+    }
+
+    const trackJson = {
+      name: spotifyTrackData.name,
+      artistIds: artistIds,
+      artistNames: artistNames,
+      albumId: spotifyTrackData.album.id,
+      imageURL: spotifyTrackData.album.images[0].url,
+      duration: spotifyTrackData.duration_ms,
+      releaseDate: spotifyTrackData.album.release_date,
+      popularity: spotifyTrackData.popularity,
+
+      spotifyId: id,
+      listenCount: 0,
+      listenTime: 0,
+      skippedCount: 0
+    };
+    databaseAccesss.addOrUpdateTrack({ spotifyId: id }, trackJson);
+
+    res.send(trackJson);
     return;
   }
 
 
-  if (mongoTrackData.name && mongoTrackData.artists && mongoTrackData.albumId
+  if (mongoTrackData.name && mongoTrackData.albumId
+      && mongoTrackData.artistIds[0]  && mongoTrackData.artistNames[0]
       && mongoTrackData.imageURL && mongoTrackData.duration
       && mongoTrackData.releaseDate && mongoTrackData.popularity) {
     
@@ -136,9 +167,16 @@ exports.track = async (req, res) => {
   } else {
     const spotifyTrackData = await spotifyAccess.getTrack(id);
 
+    var artistIds = []; var artistNames = [];
+    for (let artist of spotifyTrackData.artists) {
+      artistIds.push(artist.id);
+      artistNames.push(artist.name);
+    }
+
     const spotifyJson = {
       name: spotifyTrackData.name,
-      artists: spotifyTrackData.artists,
+      artistIds: artistIds,
+      artistNames: artistNames,
       albumId: spotifyTrackData.album.id,
       imageURL: spotifyTrackData.album.images[0].url,
       duration: spotifyTrackData.duration_ms,

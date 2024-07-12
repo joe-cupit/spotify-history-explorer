@@ -9,7 +9,8 @@ const trackSchema = mongoose.Schema({
 
 
   // meta data
-  artists: [String],     // list of artist spotify ids
+  artistIds: [String],     // list of artist spotify ids
+  artistNames: [String],     // list of artist spotify names
   albumId: String,       // album spotify id
 
   imageURL: String,      // url for album cover

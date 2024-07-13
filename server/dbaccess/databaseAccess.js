@@ -305,3 +305,35 @@ exports.getTotalTime = async function() {
   timeData = await models.History.aggregate([{$group: {_id:null, sum:{$sum:"$listenedFor"}}}])
   return timeData[0].sum;
 }
+
+
+exports.getTrackHistory = async function(trackId) {
+  const trackHistory = await models.History.find({spotifyId: trackId}, 'listenedOn listenedFor');
+  const trackData = await models.Track.find({spotifyId: trackId}, 'duration');
+  const trackDuration = trackData[0].duration;
+
+  var listenDurations = [];
+  for (let track of trackHistory) {
+    listenDurations.push(track.listenedFor);
+  }
+  const listenCount = listenDurations.length;
+
+  var xData = []; var yData = [];
+  for (let t=0; t<=trackDuration; t+=1000) {
+    listenDurations = listenDurations.filter(n => n>=t);
+
+    xData.push(t);
+    yData.push(listenDurations.length / listenCount);
+  }
+
+/*   listenDurations = listenDurations.filter(n => n>=trackDuration);
+  xData.push(trackDuration);
+  yData.push(listenDurations.length / listenCount); */
+
+  const historyJson = {
+    xData: xData,
+    yData: yData,
+    duration: trackDuration
+  }
+  return historyJson;
+}

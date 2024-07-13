@@ -101,8 +101,8 @@ exports.album = async (req, res) => {
 
     const databaseJson = {
       spotifyId: id,
-      listenCount: mongoAlbumData.totalListeningCount,
-      listenTime: mongoAlbumData.totalListeningTime,
+      totalListeningCount: mongoAlbumData.totalListeningCount,
+      totalListeningTime: mongoAlbumData.totalListeningTime,
       skippedCount: mongoAlbumData.skippedCount
     };
   
@@ -147,8 +147,8 @@ exports.track = async (req, res) => {
       popularity: spotifyTrackData.popularity,
 
       spotifyId: id,
-      listenCount: 0,
-      listenTime: 0,
+      totalListeningCount: 0,
+      totalListeningTime: 0,
       skippedCount: 0
     };
     databaseAccesss.addOrUpdateTrack({ spotifyId: id }, trackJson);
@@ -187,8 +187,8 @@ exports.track = async (req, res) => {
 
     const databaseJson = {
       spotifyId: id,
-      listenCount: mongoTrackData.totalListeningCount,
-      listenTime: mongoTrackData.totalListeningTime,
+      totalListeningCount: mongoTrackData.totalListeningCount,
+      totalListeningTime: mongoTrackData.totalListeningTime,
       skippedCount: mongoTrackData.skippedCount
     };
 
@@ -276,4 +276,13 @@ exports.homepage = async (req, res) => {
   const totalTime = await databaseAccesss.getTotalTime();
   
   res.send({totalTime: totalTime});
+}
+
+
+exports.getTrackChartData = async (req, res) => {
+  const trackId = req.params.id;
+
+  const trackChartData = await databaseAccesss.getTrackHistory(trackId);
+
+  res.send(trackChartData);
 }

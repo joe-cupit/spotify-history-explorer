@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { StatsHeader } from "../../components/StatsTitle";
+import { ListenChart } from "../../components/ListenChart";
 
 import { formatMilliseconds } from "../../utils/formatMilliseconds";
 
@@ -30,6 +31,11 @@ export function TrackPage() {
       />
 
       <h1>{formatMilliseconds(trackData?.totalListeningTime)}</h1>
+
+      {trackData && 
+        <ListenChart id={trackData?.spotifyId} />
+      }
+      
     </>
   )
 }

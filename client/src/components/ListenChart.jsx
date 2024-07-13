@@ -6,18 +6,18 @@ import { LineChart } from '@mui/x-charts/LineChart';
 import { formatTrackTime } from "../utils/formatTrackTime";
 
 
-export function ListenChart({ id }) {
+export function ListenChart({ id, maxlen }) {
 
   const [trackHistory, setTrackHistory] = useState(null);
   useEffect(() => {
-    fetch(`/api/track/${id}/chart`)
+    fetch(`/api/track/${id}/chart/${maxlen}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
         console.log(data.xData.map((x) => formatTrackTime(x)));
         setTrackHistory(data);
       });
-  }, [id]);
+  }, [id, maxlen]);
 
   return (
     <>

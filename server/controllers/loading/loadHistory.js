@@ -1,6 +1,6 @@
 const sleep = require('../sleep');
 
-const databaseController = require('../../dbaccess/databaseAccess');
+const databaseController = require('../database/databaseController').query;
 const spotifyController = require('../spotify/apiController');
 const spotifyAccess = require('../spotify/apiAccess');
 
@@ -75,7 +75,7 @@ async function addTrackToDatabase(trackEntry) {
     spotifyId: trackId
   }
 
-  var [ artistList, albumId ] = await databaseController.getArtistsAndAlbumFromTrackIfExists(trackId);
+  var [ artistList, albumId ] = await databaseController.getTrackArtistAndAlbum(trackId);
 
   if (artistList && albumId) {
     console.log('[MongoDB] Track info found in database');
@@ -90,10 +90,11 @@ async function addTrackToDatabase(trackEntry) {
 
     const spotifyTrackData = await spotifyAccess.getTrack(trackId);
     if (spotifyTrackData) {
-      artistList = await addArtistsToDatabase(spotifyTrackData.artists, updateJson);
+      var [artistIds, artistNames] = await addArtistsToDatabase(spotifyTrackData.artists, updateJson);
 
       trackJson.name = spotifyTrackData.name;
-      trackJson.artists = artistList;
+      trackJson.artistIds = artistIds;
+      trackJson.artistNames = artistNames;
       trackJson.albumId = spotifyTrackData.album.id;
       trackJson.imageURL = spotifyTrackData.album.images[0].url;
       trackJson.duration = spotifyTrackData.duration_ms;
@@ -155,7 +156,7 @@ async function addEpisodeToDatabase(episodeEntry) {
     spotifyId: episodeId
   }
 
-  var showId = await databaseController.getShowFromEpisodeIfExists(episodeId);
+  var showId = await databaseController.getEpisodeShow(episodeId);
   if (showId) {
     console.log('[MongoDB] Episode info found in database');
     await databaseController.addOrUpdateShow({ spotifyId: showId }, updateJson);

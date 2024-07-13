@@ -18,7 +18,7 @@ route.get('/artist/:id/toptracks/:limit', apiController.getTopTracksByArtist)
 
 route.get('/album/:id', apiController.album);
 route.get('/track/:id', apiController.track);
-route.get('/track/:id/chart', apiController.getTrackChartData);
+route.get('/track/:id/chart/:maxlen', apiController.getTrackChartData);
 
 route.get('/show/:id', apiController.show);
 

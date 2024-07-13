@@ -8,8 +8,10 @@ const app = express();
 
 // Database connection
 
-const connectToMongoDB = require('./dbaccess/connect.js');
-connectToMongoDB();
+const dbController = require('./controllers/database/databaseController');
+dbController.connect();
+
+console.log(dbController)
 
 
 // Spotify API

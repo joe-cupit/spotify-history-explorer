@@ -33,7 +33,7 @@ export function TrackPage() {
       <h1>{formatMilliseconds(trackData?.totalListeningTime)}</h1>
 
       {trackData && 
-        <ListenChart id={trackData?.spotifyId} />
+        <ListenChart id={trackData?.spotifyId} maxlen={trackData?.duration} />
       }
       
     </>

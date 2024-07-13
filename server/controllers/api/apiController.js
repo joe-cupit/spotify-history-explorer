@@ -1,5 +1,7 @@
 const spotifyAccess = require('../spotify/apiAccess');
-const databaseAccesss = require('../../dbaccess/databaseAccess');
+const databaseController = require('../database/databaseController');
+const databaseAccess = databaseController.query;
+const databaseModify = databaseController.modify;
 
 
 exports.toplist = async (req, res) => {
@@ -9,16 +11,16 @@ exports.toplist = async (req, res) => {
   var mongoTopList = null;
   switch (type) {
     case "artist":
-      mongoTopList = await databaseAccesss.getArtistsOrderByTimeListened(limit);
+      mongoTopList = await databaseAccess.getArtistsOrderByTimeListened(limit);
       break;
     case "track":
-      mongoTopList = await databaseAccesss.getTracksOrderByTimeListened(limit);
+      mongoTopList = await databaseAccess.getTracksOrderByTimeListened(limit);
       break;
     case "album":
-      mongoTopList = await databaseAccesss.getAlbumsOrderByTimeListened(limit);
+      mongoTopList = await databaseAccess.getAlbumsOrderByTimeListened(limit);
       break;
     case "show":
-      mongoTopList = await databaseAccesss.getShowsOrderByTimeListened(limit);
+      mongoTopList = await databaseAccess.getShowsOrderByTimeListened(limit);
       break;
   }
 
@@ -29,7 +31,7 @@ exports.toplist = async (req, res) => {
 exports.artist = async (req, res) => {
   const id = req.params.id;
 
-  const mongoArtistData = await databaseAccesss.getArtistById(id);
+  const mongoArtistData = await databaseAccess.getArtistById(id);
 
   if (!mongoArtistData) {
     // deal with never listened to.
@@ -51,7 +53,7 @@ exports.artist = async (req, res) => {
       followers: spotifyArtistData.followers.total,
       popularity: spotifyArtistData.popularity
     };
-    databaseAccesss.addOrUpdateArtist({ spotifyId: id }, spotifyJson);
+    databaseModify.addOrUpdateArtist({ spotifyId: id }, spotifyJson);
 
     const databaseJson = {
       spotifyId: id,
@@ -63,10 +65,10 @@ exports.artist = async (req, res) => {
     resultJson = Object.assign({}, spotifyJson, databaseJson);
   }
 
-  const mongoTopTracks = await databaseAccesss.getTopTracksByArtist(id, 5);
+  const mongoTopTracks = await databaseAccess.getTracksByArtistOrderByListenTime(id, limit=5);
   resultJson.topTracks = mongoTopTracks;
 
-  const artistRank = await databaseAccesss.getArtistRank(id);
+  const artistRank = await databaseAccess.getArtistRank(id);
   resultJson.rank = artistRank;
 
   res.send(resultJson);  
@@ -76,7 +78,7 @@ exports.artist = async (req, res) => {
 exports.album = async (req, res) => {
   const id = req.params.id;
 
-  const mongoAlbumData = await databaseAccesss.getAlbumById(id);
+  const mongoAlbumData = await databaseAccess.getAlbumById(id);
 
   if (!mongoAlbumData) {
     // deal with never listened to.
@@ -97,7 +99,7 @@ exports.album = async (req, res) => {
       releaseDate: spotifyAlbumData.release_date,
       albumType: spotifyAlbumData.album_type
     };
-    databaseAccesss.addOrUpdateAlbum({ spotifyId: id }, spotifyJson);
+    databaseModify.addOrUpdateAlbum({ spotifyId: id }, spotifyJson);
 
     const databaseJson = {
       spotifyId: id,
@@ -113,7 +115,7 @@ exports.album = async (req, res) => {
 
   albumJson.tracks = []
   for (let track of spotifyAlbumData.tracks.items) {
-    let mongoTrackData = await databaseAccesss.getTrackById(track.id);
+    let mongoTrackData = await databaseAccess.getTrackById(track.id);
     albumJson.tracks.push(mongoTrackData);
   }
   
@@ -125,7 +127,7 @@ exports.album = async (req, res) => {
 exports.track = async (req, res) => {
   const id = req.params.id;
 
-  const mongoTrackData = await databaseAccesss.getTrackById(id);
+  const mongoTrackData = await databaseAccess.getTrackById(id);
 
   if (!mongoTrackData) {
     const spotifyTrackData = await spotifyAccess.getTrack(id);
@@ -151,7 +153,7 @@ exports.track = async (req, res) => {
       totalListeningTime: 0,
       skippedCount: 0
     };
-    databaseAccesss.addOrUpdateTrack({ spotifyId: id }, trackJson);
+    databaseModify.addOrUpdateTrack({ spotifyId: id }, trackJson);
 
     res.send(trackJson);
     return;
@@ -183,7 +185,7 @@ exports.track = async (req, res) => {
       releaseDate: spotifyTrackData.album.release_date,
       popularity: spotifyTrackData.popularity
     };
-    databaseAccesss.addOrUpdateTrack({ spotifyId: id }, spotifyJson);
+    databaseModify.addOrUpdateTrack({ spotifyId: id }, spotifyJson);
 
     const databaseJson = {
       spotifyId: id,
@@ -200,7 +202,7 @@ exports.track = async (req, res) => {
 exports.show = async (req, res) => {
   const id = req.params.id;
 
-  const mongoShowData = await databaseAccesss.getShowById(id);
+  const mongoShowData = await databaseAccess.getShowById(id);
 
   if (!mongoShowData) {
     // deal with never listened to.
@@ -221,7 +223,7 @@ exports.show = async (req, res) => {
       imageURL: spotifyArtistData.images[1].url,
       totalEpisodes: spotifyArtistData.total_episodes,
     };
-    databaseAccesss.addOrUpdateArtist({ spotifyId: id }, spotifyJson);
+    databaseModify.addOrUpdateArtist({ spotifyId: id }, spotifyJson);
 
     const databaseJson = {
       spotifyId: id,
@@ -233,10 +235,10 @@ exports.show = async (req, res) => {
     resultJson = Object.assign({}, spotifyJson, databaseJson);
   }
 
-  const mongoTopEpisodes = await databaseAccesss.getTopEpisodesByShow(id, 5);
+  const mongoTopEpisodes = await databaseAccess.getEpisodesByShowOrderByListenTime(id, limit=5);
   resultJson.topTracks = mongoTopEpisodes;
 
-  const showRank = await databaseAccesss.getShowRank(id);
+  const showRank = await databaseAccess.getShowRank(id);
   resultJson.rank = showRank;
 
   res.send(resultJson);  
@@ -257,7 +259,7 @@ exports.getTopTracksByArtist = async (req, res) => {
   const artistId = req.params.id;
   const limit = req.params.limit;
 
-  const mongoTopTracks = await databaseAccesss.getTopTracksByArtist(artistId, limit);
+  const mongoTopTracks = await databaseAccess.getTopTracksByArtist(artistId, limit);
   res.send(mongoTopTracks);
 }
 
@@ -265,7 +267,7 @@ exports.getTopTracksByArtist = async (req, res) => {
 exports.getArtistRank = async (req, res) => {
   const artistId = req.params.id;
 
-  const artistRank = await databaseAccesss.getArtistRank(artistId);
+  const artistRank = await databaseAccess.getArtistRank(artistId);
   res.send({ artistRank: artistRank });
 }
 
@@ -273,7 +275,7 @@ exports.getArtistRank = async (req, res) => {
 
 
 exports.homepage = async (req, res) => {
-  const totalTime = await databaseAccesss.getTotalTime();
+  const totalTime = await databaseAccess.getTotalTime();
   
   res.send({totalTime: totalTime});
 }
@@ -281,8 +283,22 @@ exports.homepage = async (req, res) => {
 
 exports.getTrackChartData = async (req, res) => {
   const trackId = req.params.id;
+  const trackDuration = req.params.maxlen;
 
-  const trackChartData = await databaseAccesss.getTrackHistory(trackId);
+  var listenDurations = await databaseAccess.getTrackHistory(trackId);
 
-  res.send(trackChartData);
+  const listenCount = listenDurations.length;
+
+  var xData = []; var yData = [];
+  for (let t=0; t<=trackDuration; t+=1000) {
+    listenDurations = listenDurations.filter(n => n>=t);
+
+    xData.push(t);
+    yData.push(listenDurations.length / listenCount);
+  }
+
+  res.send({
+    xData: xData,
+    yData: yData,
+  })
 }

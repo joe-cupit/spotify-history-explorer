@@ -1,6 +1,6 @@
 import "./StatsTitle.css";
 
-import { millisecondsToReadableTime } from "../assets/helper";
+import { formatMilliseconds } from "../utils/formatMilliseconds";
 import { Link } from "react-router-dom";
 
 import { RankBadge } from "./RankBadge";
@@ -39,7 +39,7 @@ export function StatsHeader({ imageURL, name, listened_ms, rank, artistIds, arti
                 </h2>
                :
                 <>
-                  <span>Listened for <br /> {millisecondsToReadableTime(listened_ms)}</span>
+                  <span>Listened for <br /> {formatMilliseconds(listened_ms)}</span>
 
                   <span>
                     {rank

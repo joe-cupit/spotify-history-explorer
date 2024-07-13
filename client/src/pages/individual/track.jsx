@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 
 import { StatsHeader } from "../../components/StatsTitle";
 
+import { formatMilliseconds } from "../../utils/formatMilliseconds";
+
 
 export function TrackPage() {
   const {id} = useParams();
@@ -26,6 +28,8 @@ export function TrackPage() {
         artistIds={trackData?.artistIds}
         artistNames={trackData?.artistNames}
       />
+
+      <h1>{formatMilliseconds(trackData?.totalListeningTime)}</h1>
     </>
   )
 }

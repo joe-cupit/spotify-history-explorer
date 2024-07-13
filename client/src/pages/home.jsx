@@ -3,7 +3,7 @@ import "./home.css"
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"
 
-import { millisecondsToReadableTime } from "../assets/helper";
+import { formatMilliseconds } from "../utils/formatMilliseconds";
 
 
 export function HomePage() {
@@ -25,7 +25,7 @@ export function HomePage() {
       <h1>Spotify Stats Homepage</h1>
       <div className="homepage">
         <span>
-          You've listened to Spotify for <h1>{millisecondsToReadableTime(totalListeningTime)}</h1> total<br/>
+          You've listened to Spotify for <h1>{formatMilliseconds(totalListeningTime)}</h1> total<br/>
         </span>
 
         <TopSection type={'artist'} />

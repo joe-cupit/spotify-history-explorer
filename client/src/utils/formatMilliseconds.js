@@ -1,5 +1,4 @@
-
-export function millisecondsToReadableTime(ms) {
+export function formatMilliseconds(ms) {
   var timeParts = [];
 
   const hours = Math.trunc(ms / (1000*60*60));
@@ -19,4 +18,3 @@ export function millisecondsToReadableTime(ms) {
 
   return timeParts.join(' ');
 }
-

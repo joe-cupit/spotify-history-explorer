@@ -16,9 +16,10 @@ console.log(dbController)
 
 // Spotify API
 
-const spotifyApi = require('./controllers/spotify/apiController');
+const spotifyApi = require('./controllers/spotify/spotifyController');
 spotifyApi.connectToSpotifyApi();
-spotifyApi.validateConnection();
+
+console.log(spotifyApi)
 
 
 // API routes

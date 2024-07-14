@@ -1,4 +1,4 @@
-const spotifyAccess = require('../spotify/apiAccess');
+const spotifyAccess = require('../spotify/spotifyController').access;
 const databaseController = require('../database/databaseController');
 const databaseAccess = databaseController.query;
 const databaseModify = databaseController.modify;
@@ -47,22 +47,15 @@ exports.artist = async (req, res) => {
   } else {
     const spotifyArtistData = await spotifyAccess.getArtist(id);
 
-    const spotifyJson = {
-      name: spotifyArtistData.name,
-      imageURL: spotifyArtistData.images[1].url,
-      followers: spotifyArtistData.followers.total,
-      popularity: spotifyArtistData.popularity
-    };
-    databaseModify.addOrUpdateArtist({ spotifyId: id }, spotifyJson);
+    databaseModify.addOrUpdateArtist({ spotifyId: id }, spotifyArtistData);
 
     const databaseJson = {
-      spotifyId: id,
       totalListeningCount: mongoArtistData.totalListeningCount,
       totalListeningTime: mongoArtistData.totalListeningTime,
       skippedCount: mongoArtistData.skippedCount
     };
 
-    resultJson = Object.assign({}, spotifyJson, databaseJson);
+    resultJson = Object.assign({}, spotifyArtistData, databaseJson);
   }
 
   const mongoTopTracks = await databaseAccess.getTracksByArtistOrderByListenTime(id, limit=5);
@@ -88,38 +81,30 @@ exports.album = async (req, res) => {
 
   const spotifyAlbumData = await spotifyAccess.getAlbum(id);
 
-  if (!(mongoAlbumData.name && mongoAlbumData.artists
+  if (!(mongoAlbumData.name
+      && mongoAlbumData.artistIds && mongoAlbumData.artistNames
       && mongoAlbumData.imageURL && mongoAlbumData.totalTracks
       && mongoAlbumData.releaseDate && mongoAlbumData.albumType)) {
-    const spotifyJson = {
-      name: spotifyAlbumData.name,
-      artists: [spotifyAlbumData.artists[0].id],
-      imageURL: spotifyAlbumData.images[0].url,
-      totalTracks: spotifyAlbumData.total_tracks,
-      releaseDate: spotifyAlbumData.release_date,
-      albumType: spotifyAlbumData.album_type
-    };
-    databaseModify.addOrUpdateAlbum({ spotifyId: id }, spotifyJson);
+
+    databaseModify.addOrUpdateAlbum({ spotifyId: id }, spotifyAlbumData);
 
     const databaseJson = {
-      spotifyId: id,
       totalListeningCount: mongoAlbumData.totalListeningCount,
       totalListeningTime: mongoAlbumData.totalListeningTime,
       skippedCount: mongoAlbumData.skippedCount
     };
   
-    albumJson = Object.assign({}, spotifyJson, databaseJson);
+    albumJson = Object.assign({}, spotifyAlbumData, databaseJson);
   } else {
     albumJson = JSON.parse(JSON.stringify(mongoAlbumData));
   }
 
   albumJson.tracks = []
-  for (let track of spotifyAlbumData.tracks.items) {
-    let mongoTrackData = await databaseAccess.getTrackById(track.id);
+  for (let trackId of spotifyAlbumData.trackIds) {
+    let mongoTrackData = await databaseAccess.getTrackById(trackId);
     albumJson.tracks.push(mongoTrackData);
   }
   
-  albumJson.artistNames = [spotifyAlbumData.artists[0].name];
   res.send(albumJson);
 };
 
@@ -132,30 +117,12 @@ exports.track = async (req, res) => {
   if (!mongoTrackData) {
     const spotifyTrackData = await spotifyAccess.getTrack(id);
 
-    var artistIds = []; var artistNames = [];
-    for (let artist of spotifyTrackData.artists) {
-      artistIds.push(artist.id);
-      artistNames.push(artist.name);
-    }
+    spotifyTrackData.totalListeningCount = 0;
+    spotifyTrackData.totalListeningTime = 0;
+    spotifyTrackData.skippedCount = 0;
 
-    const trackJson = {
-      name: spotifyTrackData.name,
-      artistIds: artistIds,
-      artistNames: artistNames,
-      albumId: spotifyTrackData.album.id,
-      imageURL: spotifyTrackData.album.images[0].url,
-      duration: spotifyTrackData.duration_ms,
-      releaseDate: spotifyTrackData.album.release_date,
-      popularity: spotifyTrackData.popularity,
-
-      spotifyId: id,
-      totalListeningCount: 0,
-      totalListeningTime: 0,
-      skippedCount: 0
-    };
-    databaseModify.addOrUpdateTrack({ spotifyId: id }, trackJson);
-
-    res.send(trackJson);
+    databaseModify.addOrUpdateTrack({ spotifyId: id }, spotifyTrackData);
+    res.send(spotifyTrackData);
     return;
   }
 
@@ -169,32 +136,15 @@ exports.track = async (req, res) => {
   } else {
     const spotifyTrackData = await spotifyAccess.getTrack(id);
 
-    var artistIds = []; var artistNames = [];
-    for (let artist of spotifyTrackData.artists) {
-      artistIds.push(artist.id);
-      artistNames.push(artist.name);
-    }
-
-    const spotifyJson = {
-      name: spotifyTrackData.name,
-      artistIds: artistIds,
-      artistNames: artistNames,
-      albumId: spotifyTrackData.album.id,
-      imageURL: spotifyTrackData.album.images[0].url,
-      duration: spotifyTrackData.duration_ms,
-      releaseDate: spotifyTrackData.album.release_date,
-      popularity: spotifyTrackData.popularity
-    };
-    databaseModify.addOrUpdateTrack({ spotifyId: id }, spotifyJson);
+    databaseModify.addOrUpdateTrack({ spotifyId: id }, spotifyTrackData);
 
     const databaseJson = {
-      spotifyId: id,
       totalListeningCount: mongoTrackData.totalListeningCount,
       totalListeningTime: mongoTrackData.totalListeningTime,
       skippedCount: mongoTrackData.skippedCount
     };
 
-    res.send(Object.assign({}, spotifyJson, databaseJson));
+    res.send(Object.assign({}, spotifyTrackData, databaseJson));
   }
 
 };
@@ -216,23 +166,17 @@ exports.show = async (req, res) => {
       && mongoShowData.totalEpisodes) {
     resultJson = JSON.parse(JSON.stringify(mongoShowData));
   } else {
-    const spotifyArtistData = await spotifyAccess.getArtist(id);
+    const spotifyShowData = await spotifyAccess.getShow(id);
 
-    const spotifyJson = {
-      name: spotifyArtistData.name,
-      imageURL: spotifyArtistData.images[1].url,
-      totalEpisodes: spotifyArtistData.total_episodes,
-    };
-    databaseModify.addOrUpdateArtist({ spotifyId: id }, spotifyJson);
+    databaseModify.addOrUpdateArtist({ spotifyId: id }, spotifyShowData);
 
     const databaseJson = {
-      spotifyId: id,
       totalListeningCount: mongoShowData.totalListeningCount,
       totalListeningTime: mongoShowData.totalListeningTime,
       skippedCount: mongoShowData.skippedCount
     };
 
-    resultJson = Object.assign({}, spotifyJson, databaseJson);
+    resultJson = Object.assign({}, spotifyShowData, databaseJson);
   }
 
   const mongoTopEpisodes = await databaseAccess.getEpisodesByShowOrderByListenTime(id, limit=5);

@@ -24,7 +24,7 @@ export function AlbumPage() {
         imageURL={albumData && albumData.imageURL}
         name={albumData && albumData.name}
         listened_ms={albumData && albumData.totalListeningTime}
-        artistIds={albumData && albumData.artists}
+        artistIds={albumData && albumData.artistIds}
         artistNames={albumData && albumData.artistNames}
       />
 

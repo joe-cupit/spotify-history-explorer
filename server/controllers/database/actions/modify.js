@@ -3,7 +3,7 @@ const { Artist, Album, Track, Show, Episode, History } = require('../../../model
 
 
 findOneAndUpdate = tryCatchWrapper(async (Model, json, update) => {
-  await Model.findOneAndUpdate(
+  newData = await Model.findOneAndUpdate(
     json,
     update,
     {
@@ -11,22 +11,24 @@ findOneAndUpdate = tryCatchWrapper(async (Model, json, update) => {
       upsert: true
     }
   );
+
+  return newData;
 })
 
 exports.addOrUpdateArtist = async (artistJson, updateJson) => {
-  await findOneAndUpdate(Artist, artistJson, updateJson);
+  return await findOneAndUpdate(Artist, artistJson, updateJson);
 }
 exports.addOrUpdateAlbum = async (albumJson, updateJson) => {
-  await findOneAndUpdate(Album, albumJson, updateJson);
+  return await findOneAndUpdate(Album, albumJson, updateJson);
 }
 exports.addOrUpdateTrack = async (trackJson, updateJson) => {
-  await findOneAndUpdate(Track, trackJson, updateJson);
+  return await findOneAndUpdate(Track, trackJson, updateJson);
 }
 exports.addOrUpdateShow = async (showJson, updateJson) => {
-  await findOneAndUpdate(Show, showJson, updateJson);
+  return await findOneAndUpdate(Show, showJson, updateJson);
 }
 exports.addOrUpdateEpisode = async (episodeJson, updateJson) => {
-  await findOneAndUpdate(Episode, episodeJson, updateJson);
+  return await findOneAndUpdate(Episode, episodeJson, updateJson);
 }
 
 

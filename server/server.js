@@ -1,46 +1,32 @@
 
 // Server setup
-
 const express = require('express');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 
 // Database connection
-
 const dbController = require('./controllers/database/databaseController');
 dbController.connect();
 
-console.log(dbController)
 
-
-// Spotify API
-
+// Spotify API connection
 const spotifyApi = require('./controllers/spotify/spotifyController');
 spotifyApi.connectToSpotifyApi();
 
-console.log(spotifyApi)
-
 
 // API routes
-
-app.use('/api', require('./routes/router'));
-
-
-// JSON stuff
-
-// require('./controllers/loading/loadHistory.js');
+app.use('/api', require('./controllers/api/router'));
 
 
 // Begin server
-
 app.listen(PORT, () => {
   console.log('[Server] Server started');
   console.log(`[Server] Listening on ${PORT}`);
 });
 
 
-// Closing server
+// Close server
 const mongoose = require('mongoose');
 
 process.on('SIGINT', async () => {

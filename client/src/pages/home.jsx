@@ -48,7 +48,7 @@ function TopSection({ type }) {
 
   const [topArtists, setTopArtists] = useState(null);
   useEffect(() => {
-    fetch(`/api/toplist/${type}/6`)
+    fetch(`/api/${type}/toplist/6`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

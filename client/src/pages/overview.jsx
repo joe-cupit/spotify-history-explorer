@@ -24,7 +24,7 @@ export function OverviewPage({ category }) {
   }, [category])
 
   useEffect(() => {
-    fetch(`/api/toplist/${category}/0`)
+    fetch(`/api/${category}/toplist/0`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

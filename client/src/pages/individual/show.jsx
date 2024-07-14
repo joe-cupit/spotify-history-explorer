@@ -32,7 +32,7 @@ export function ShowPage() {
       <BasicTopList
         type={"episode"}
         limit={5}
-        topList={showData && showData.topTracks}
+        topList={showData && showData.topEpisodes}
       />
 
     </>

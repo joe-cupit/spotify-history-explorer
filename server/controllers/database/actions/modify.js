@@ -3,6 +3,10 @@ const { Artist, Album, Track, Show, Episode, History } = require('../../../model
 
 
 findOneAndUpdate = tryCatchWrapper(async (Model, json, update) => {
+  if (!json) {
+    return null;
+  }
+  
   newData = await Model.findOneAndUpdate(
     json,
     update,

@@ -3,6 +3,8 @@
 // This keeps track of API calls in an attempt to avoid
 // making too many requests
 
+const sleep = require('../../sleep');
+
 var apiCallWindowSize = 0;
 const MAX_API_CALLS = 30;
 

@@ -76,7 +76,7 @@ exports.getArtistRank = tryCatchWrapper(async (artistId) => {
 // TRACK //
 exports.getTrackArtistAndAlbum = tryCatchWrapper(async (trackId) => {
   const track = await Track.findOne({ spotifyId: trackId }, 'artistIds albumId');
-  return [track.artistIds, track.albumId]
+  return [track?.artistIds, track?.albumId]
 })
 
 exports.getTracksByArtistOrderByListenTime = tryCatchWrapper(async (artistId, limit=0) => {
@@ -106,7 +106,7 @@ exports.getShowRank = tryCatchWrapper(async (showId) => {
 // EPISODE //
 exports.getEpisodeShow = tryCatchWrapper(async (episodeId) => {
   const episode = await Episode.findOne({ spotifyId: episodeId }, 'showId');
-  return episode.showId;
+  return episode?.showId;
 })
 
 exports.getEpisodesByShowOrderByListenTime = tryCatchWrapper(async (showId, limit=0) => {

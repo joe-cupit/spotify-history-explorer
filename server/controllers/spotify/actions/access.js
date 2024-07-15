@@ -50,6 +50,7 @@ const validateConnection = async function() {
 // api calls
 
 const makeApiCall = (func) => async (...args) => {
+  await spotifyCall.callPermission();
   try {
     return await func(...args);
   } catch (err) {
@@ -67,7 +68,6 @@ exports.getArtist = makeApiCall(async (artistId) => {
   const response = await spotifyApi.getArtist(artistId);
   const artistData = response.body;
   return {
-    spotifyId: artistData.id,
     name: artistData.name,
 
     imageURL: artistData.images[0].url,
@@ -92,7 +92,6 @@ exports.getAlbum = makeApiCall(async (albumId) => {
   }
 
   return {
-    spotifyId: albumData.id,
     name: albumData.name,
 
     artistIds: artistIds,
@@ -119,7 +118,6 @@ exports.getTrack = makeApiCall(async (trackId) => {
   }
 
   return {
-    spotifyId: trackData.id,
     name: trackData.name,
 
     artistIds: artistIds,
@@ -139,7 +137,6 @@ exports.getShow = makeApiCall(async (showId) => {
   const showData = response.body;
 
   return {
-    spotifyId: showData.id,
     name: showData.name,
 
     imageURL: showData.images[0].url,
@@ -153,7 +150,6 @@ exports.getEpisode = makeApiCall(async (episodeId) => {
   const episodeData = response.body;
 
   return {
-    spotifyId: episodeData.id,
     name: episodeData.name,
 
     showId: episodeData.show.id,
@@ -168,4 +164,55 @@ exports.searchFor = makeApiCall(async (term, types, limit) => {
   console.log(`[Spotify] Searching for '${term}'`);
   const response = await spotifyApi.search(term, types, { limit: limit , market: 'GB' });
   return response.body;
+})
+
+
+
+exports.getTrackExtended = makeApiCall(async (trackId) => {
+  console.log(`[Spotify] Finding extended track data with id '${trackId}'`);
+  const response = await spotifyApi.getTrack(trackId);
+  const trackData = response.body;
+
+  let artistIds = []; let artistNames = [];
+  for (var artist of trackData.artists) {
+    artistIds.push(artist.id);
+    artistNames.push(artist.name);
+  }
+
+  return {
+    trackJson: {
+      spotifyId: trackData.id,
+      name: trackData.name,
+
+      artistIds: artistIds,
+      artistNames: artistNames,
+      albumId: trackData.album.id,
+
+      imageURL: trackData.album.images[0].url,
+      duration: trackData.duration_ms,
+      releaseDate: trackData.album.release_date,
+      popularity: trackData.popularity,      
+    },
+    artistData: trackData.artists,
+    albumData: trackData.album
+  };
+})
+
+exports.getEpisodeExtended = makeApiCall(async (episodeId) => {
+  console.log(`[Spotify] Finding episode with id '${episodeId}'`);
+  const response = await spotifyApi.getEpisode(episodeId, { market: 'GB'});
+  const episodeData = response.body;
+
+  return {
+  episodeJson: {
+    spotifyId: episodeData.id,
+    name: episodeData.name,
+
+    showId: episodeData.show.id,
+    imageURL: episodeData.images[0].url,
+    duration: episodeData.duration_ms,
+    releaseDate: episodeData.release_date    
+  },
+  showData: episodeData.show
+  };
 })

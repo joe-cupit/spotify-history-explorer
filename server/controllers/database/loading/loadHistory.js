@@ -10,7 +10,7 @@ loadHistory = async function(dir) {
   console.log(`[Server] Loading ${listeningHistory.length} songs...`);
   await sleep(1000);
 
-  for (let item of listeningHistory) {
+  for (let item of listeningHistory.reverse()) {
     if (item.spotify_track_uri) {
       await addTrackToDatabase(item);
     }

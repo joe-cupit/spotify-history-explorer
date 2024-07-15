@@ -8,7 +8,7 @@ exports.artist = async (req, res) => {
   let resultJson = await dbController.query.getArtistById(id);
 
   const requiredParams = ['name', 'imageURL', 'followers', 'popularity'];
-  if (!resultJson || !!requiredParams.every( (k) => resultJson.hasOwnProperty(k) )) {
+  if (!resultJson || !requiredParams.every( k => resultJson.hasOwnProperty(k))) {
     const spotifyData = await spotifyAccess.getArtist(id);
 
     resultJson = await dbController.modify.addOrUpdateArtist({spotifyId: id}, spotifyData);
@@ -29,11 +29,7 @@ exports.album = async (req, res) => {
 
   const requiredParams = ['name', 'artistIds', 'artistNames', 'trackIds',
                           'imageURL', 'albumType', 'totalTracks', 'releaseDate'];
-  if (!resultJson
-      || !!requiredParams.every( (k) => resultJson.hasOwnProperty(k) )
-      || resultJson.artistIds.length == 0
-      || resultJson.artistNames.length == 0 
-      || resultJson.trackIds.length == 0 ) {
+  if (!resultJson || !requiredParams.every( (k) => resultJson.hasOwnProperty(k) )) {
     const spotifyData = await spotifyAccess.getAlbum(id);
 
     resultJson = await dbController.modify.addOrUpdateAlbum({spotifyId: id}, spotifyData);
@@ -43,33 +39,36 @@ exports.album = async (req, res) => {
 
   let tracksData = [];
   for (let trackId of resultJson.trackIds) {
-    tracksData.push(await dbController.query.getTrackById(trackId));
+    var trackData = await getTrack(trackId);
+    tracksData.push(trackData);
   }
   resultJson.tracks = tracksData
 
   res.send(resultJson);
 }
 
-exports.track = async (req, res) => {
-  const id = req.params.id;
 
+const getTrack = async function(id) {
   let resultJson = await dbController.query.getTrackById(id);
 
   const requiredParams = ['name', 'artistIds', 'artistNames', 'albumId',
                           'imageURL', 'duration', 'releaseDate', 'popularity'];
-  if (!resultJson
-      || !!requiredParams.every( (k) => resultJson.hasOwnProperty(k) )
-      || resultJson.artistIds.length == 0
-      || resultJson.artistNames.length == 0 ) {
+  if (!resultJson || !requiredParams.every( (k) => resultJson.hasOwnProperty(k) )) {
     const spotifyData = await spotifyAccess.getTrack(id);
 
     resultJson = await dbController.modify.addOrUpdateTrack({spotifyId: id}, spotifyData);
   }
 
   resultJson = JSON.parse(JSON.stringify(resultJson));
+  return resultJson;
+}
 
+exports.track = async (req, res) => {
+  const id = req.params.id;
+  const resultJson = await getTrack(id);
   res.send(resultJson);
 }
+
 
 exports.show = async (req, res) => {
   const id = req.params.id;
@@ -77,7 +76,7 @@ exports.show = async (req, res) => {
   let resultJson = await dbController.query.getShowById(id);
 
   const requiredParams = ['name', 'imageURL', 'totalEpisodes'];
-  if (!resultJson || !!requiredParams.every( (k) => resultJson.hasOwnProperty(k) )) {
+  if (!resultJson || !requiredParams.every( (k) => resultJson.hasOwnProperty(k) )) {
     const spotifyData = await spotifyAccess.getShow(id);
 
     resultJson = await dbController.modify.addOrUpdateShow({spotifyId: id}, spotifyData);

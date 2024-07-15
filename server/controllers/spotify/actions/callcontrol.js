@@ -6,7 +6,7 @@
 const sleep = require('../../sleep');
 
 var apiCallWindowSize = 0;
-const MAX_API_CALLS = 30;
+const MAX_API_CALLS = 60;
 
 exports.addApiCalls = function(n) {
   apiCallWindowSize += n;

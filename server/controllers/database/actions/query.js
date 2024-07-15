@@ -83,11 +83,11 @@ exports.getTracksByArtistOrderByListenTime = tryCatchWrapper(async (artistId, li
   console.log(`[MongoDB] Getting top tracks of artist with id '${artistId}'`);
   var topTracks = null;
   if (limit) {
-    topTracks = await Track.find({ artists: artistId })
+    topTracks = await Track.find({ artistIds: artistId })
       .sort({ totalListeningTime: -1 })
       .limit(limit);
   } else {
-    topTracks = await Track.find({ artists: artistId })
+    topTracks = await Track.find({ artistIds: artistId })
       .sort({ totalListeningTime: -1 });
   }
   return topTracks;

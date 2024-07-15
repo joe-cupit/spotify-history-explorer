@@ -11,6 +11,14 @@ export function BasicTopList({ type, limit, topList, rank }) {
 
   rank = parseInt(rank);
 
+  let longestListen = 0;
+  if (topList) {
+    Object.values(topList).map(k => {
+      longestListen = Math.max(longestListen, k.totalListeningTime);
+      return 0;
+    })
+  }
+
   return (
     <>
     <div className="top-list">
@@ -21,7 +29,7 @@ export function BasicTopList({ type, limit, topList, rank }) {
               <ItemCard
                 item={item}
                 type={type}
-                longestListen={topList[0].totalListeningTime}
+                longestListen={longestListen}
                 active={(rank === (index+1))}
 
                 onClick={() => {setSearchParams({'rank': index+1})}}

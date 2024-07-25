@@ -59,7 +59,7 @@ function ItemCard({ item, type, longestListen, active, onClick }) {
             to={`https://open.spotify.com/${type}/${item.spotifyId}`}
             target="_blank">
               <div className="top-list-image">
-                <img src={item.imageURL} alt={item.name} />
+                <img loading="lazy" src={item.imageURL} alt={item.name} />
               </div>
           </Link>
 

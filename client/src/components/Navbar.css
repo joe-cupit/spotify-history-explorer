@@ -1,6 +1,6 @@
 .nav {
-  background-color: #15171d;
-  color: white;
+  color: var(--primary-content);
+  background-color: var(--primary);
   font-size: 1.5rem;
 
   display: flex;
@@ -20,6 +20,7 @@
 }
 
 .nav-title {
+  color: #fff;
   font-size: 1.5em;
   font-weight: bold;
 }
@@ -32,7 +33,6 @@
   display: flex;
 }
 .nav-left a {
-  color: inherit;
   text-decoration: none;
 
   height: 100%;
@@ -46,7 +46,7 @@
   font-weight: bold;
 }
 .nav-left a:hover {
-  color: #b8bdd1;
+  color: var(--copy);
 }
 
 
@@ -67,25 +67,25 @@
 }
 
 .nav-search-container input {
-  background-color: #09090c;
-  color: #fff;
+  background-color: var(--foreground);
+  color: var(--copy);
   font-size: inherit;
 
   width: 100%;
 
   padding: 0.5rem 0.75rem;
 
-  border: 0.1rem solid #4d515e;
+  border: 0.1rem solid var(--border);
   border-radius: 0.4rem;
 }
 .nav-search-container input:focus {
   outline: none;
-  border-color: #758ee1;
+  border-color: var(--primary-light);
 
   /* width: 25rem; */
 }
 .nav-search-container input::placeholder {
-  color: #aaa;
+  color: var(--copy-lighter);
   opacity: 1;
 }
 .nav-search-container input::-webkit-search-cancel-button{
@@ -94,12 +94,14 @@
 
 .nav-search-button {
   font-size: inherit;
-  padding: 0.4rem;
+  padding: 0.5rem;
   background: none;
-  color: #0ca441;
+  color: var(--primary-content);
+  background-color: var(--primary-light);
   text-align: center;
+  font-weight: 600;
 
-  border: 0.1rem solid #0ca441;
+  border: none;
   border-radius: 0.4rem;
 
   cursor: pointer;
@@ -107,13 +109,8 @@
   transition-duration: .1s;
 }
 .nav-search-button:hover {
-  color: white;
-  background-color: #0ca441;
+  background-color: var(--primary-dark);
 }
-
-/* .nav input:focus .nav-search-results {
-  background-color: #0ca441;
-} */
 
 .nav-search-results {
   position: absolute;
@@ -126,8 +123,8 @@
   gap: .2rem;
   padding: .3rem;
 
-  color: black;
-  background-color: #ededed;
+  color: var(--copy);
+  background-color: var(--foreground);
 
   padding: .3rem;
   border-radius: .3rem;
@@ -140,10 +137,10 @@
 
   border-radius: .3rem;
   padding: .2rem .45rem;
-  background-color: #eee;
+  background-color: var(--foreground);
 }
 .nav-search-result:hover {
-  background-color: #ddd;
+  background-color: var(--background);
 }
 
 .nav-search-result-img {
@@ -176,7 +173,7 @@
 
   font-size: 1.2rem;
   font-weight: 600;
-  color: #000;
+  color: var(--copy);
 }
 .nav-search-result-text-name {
   overflow: hidden;
@@ -186,5 +183,5 @@
 
 .nav-search-result-text-secondary {
   font-size: 1rem;
-  color: #555;
+  color: var(--copy-light);
 }

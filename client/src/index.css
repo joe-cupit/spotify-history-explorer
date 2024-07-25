@@ -1,3 +1,41 @@
+:root {
+  --primary: #1695c6;
+  --primary-content: #dff4fb;
+  --primary-dark: #117298;
+  --primary-light: #28b2e7;
+  
+  --secondary: #9f16c6;
+  --secondary-content: #f5dffb;
+  --secondary-dark: #7a1198;
+  --secondary-light: #bd28e7;
+  
+  --background: #161b1d;
+  --foreground: #21282b;
+  --border: #384348;
+  
+  --copy: #fbfbfc;
+  --copy-light: #d4dbde;
+  --copy-lighter: #9babb1;
+  
+  --success: #16c616;
+  --warning: #c6c616;
+  --error: #c61616;
+  --success-content: #dffbdf;
+  --warning-content: #000000;
+  --error-content: #fbdfdf;
+}
+
+.light-mode {
+  --background: #eef1f2;
+  --foreground: #fbfbfc;
+  --border: #dbe1e3;
+  
+  --copy: #21282b;
+  --copy-light: #596c73;
+  --copy-lighter: #7e939b;
+}
+
+
 * {
   box-sizing: border-box;
 }
@@ -10,15 +48,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-color: #282c34;
-  color: white;
-  height: 100vh;
+  background-color: var(--background);
+  color: var(--copy);
 }
 
 
 ::selection {
-  background: #4d6dad;
+  background: var(--primary);
 }
 ::-moz-selection {
-  background: #4d6dad;
+  background: var(--primary);
 }

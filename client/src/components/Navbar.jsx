@@ -28,6 +28,16 @@ export function Navbar() {
     setSearchTerm('');
   }
 
+
+  const toggleDarkMode = () => {
+    if (document.body.className) {
+      document.body.className = "";
+    } else {
+      document.body.className = "light-mode";
+    }
+  }
+
+
   return (
     <nav className="nav">
       <span className="nav-left">
@@ -37,6 +47,8 @@ export function Navbar() {
           <CustomLink to={'/albums'}>Albums</CustomLink>
           <CustomLink to={'/tracks'}>Tracks</CustomLink>
           <CustomLink to={'/shows'}>Shows</CustomLink>
+
+          <button onClick={() => toggleDarkMode()}>Dark/Light</button>
         </ul>
       </span>
 

@@ -18,13 +18,13 @@
   padding: .5rem .6rem;
   margin: .5rem 0;
 
-  background-color: rgba(0, 0, 0, .2);
-  border-radius: .2rem;
+  background-color: var(--foreground);
+  border-radius: .3rem;
 
   transition: .2s ease;
 }
 .top-list li.selected-item {
-  background-color: rgba(78, 78, 78, .5);
+  background-color: var(--border);
 }
 
 .top-list-stats {
@@ -55,7 +55,7 @@
   transition-duration: .1s;
 }
 .top-list ul a:hover {
-  color: #d0d6e4;
+  color: var(--copy-light);
 }
 
 .top-list-image {
@@ -67,7 +67,7 @@
   border-radius: .5rem;
   overflow: hidden;
 
-  background-color: rgb(26, 26, 27);
+  background-color: var(--background);
 }
 .top-list-image img {
   height: 100%;

@@ -8,7 +8,7 @@
 
   font-size: 1.75rem;
 
-  background-color: #20242a;
+  background-color: var(--foreground);
 }
 
 .stats-title-image {
@@ -16,7 +16,7 @@
   min-height: 15rem;
   max-width: 15rem;
   max-height: 15rem;
-  background-color: rgb(26, 26, 27);
+  background-color: var(--background);
 }
 .stats-title-image img {
   width: 100%;
@@ -37,7 +37,6 @@
 .stats-title h2 {
   font-size: 1.3em;
   font-weight: normal;
-  color: #eee;
 
   display: inline;
   padding: 0;
@@ -48,7 +47,7 @@
   transition-duration: .1s;
 }
 .stats-title h2 a:hover {
-  color: #fff;
+  color: var(--copy-light);
   text-decoration: underline;
 }
 

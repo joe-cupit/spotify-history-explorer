@@ -7,9 +7,9 @@
   min-width: 12rem;
   padding: .4rem 1rem;
 
-  background-color: #121418;
-  border: solid #ddd .1rem;
-  border-radius: .2rem;
+  background-color: var(--background);
+  border: solid var(--border) .1rem;
+  border-radius: .3rem;
 
   cursor: default;
 }
@@ -20,11 +20,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: white;
+  background-color: var(--copy);
 }
 
 .time-progress-text {
-  color: white;
+  color: var(--copy);
   mix-blend-mode: difference;
 }
 

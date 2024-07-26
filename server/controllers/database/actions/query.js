@@ -60,6 +60,80 @@ exports.getEpisodesOrderByTimeListened = async (limit=0) => {
 }
 
 
+/* Get history by different ids */
+getHistoryByIds = tryCatchWrapper(async (type, id) => {
+  console.log(`[MongoDB] Getting dates listened to ${type} with id '${id}'`);
+
+  constraint = {
+    type: 'track'
+  }
+  switch (type) {
+    case 'artist':
+      constraint.artistIds = id;
+      break;
+    case 'album':
+      constraint.albumId = id;
+      break;
+    case 'show':
+      constraint.type = 'episode';
+      constraint.showId = id;
+      break;
+    case 'episode':
+      constraint.type = 'episode';
+    default:
+      constraint.spotifyId = id;
+  }
+
+  historyData = {};
+
+  let trackHistoryByDay = {};
+  for await (const entry of History.find(constraint, 'listenedOn listenedFor spotifyId')) {
+    let date = new Date(entry.listenedOn);
+
+    if (!historyData?.firstListen?.date || date < historyData.firstListen.date) {
+      historyData.firstListen = {
+        date: date,
+        trackId: entry.spotifyId
+      };
+    }
+
+    let day = date.toISOString().split('T')[0];  // ignores time element
+    if (trackHistoryByDay[day]) {
+      trackHistoryByDay[day].time += entry.listenedFor;
+      trackHistoryByDay[day].count += 1;
+    } else {
+      trackHistoryByDay[day] = {
+        time: entry.listenedFor,
+        count: 1
+      };
+    }
+  }
+
+  mostDate = Object.keys(trackHistoryByDay).reduce((a, b) => trackHistoryByDay[a].time > trackHistoryByDay[b].time ? a : b);
+  historyData.mostTime = trackHistoryByDay[mostDate].time;
+  historyData.mostCount = trackHistoryByDay[mostDate].count;
+  historyData.mostDate = mostDate;
+
+  return historyData;
+})
+
+exports.getHistoryByArtist = async (artistId) => {
+  return await getHistoryByIds('artist', artistId);
+}
+exports.getHistoryByAlbum = async (albumId) => {
+  return await getHistoryByIds('album', albumId);
+}
+exports.getHistoryByTrack = async (trackId) => {
+  return await getHistoryByIds('track', trackId);
+}
+exports.getHistoryByShow = async (showId) => {
+  return await getHistoryByIds('show', showId);
+}
+exports.getHistoryByEpisode = async (episodeId) => {
+  return await getHistoryByIds('episode', episodeId);
+}
+
+
 
 // ARTIST //
 exports.getArtistRank = tryCatchWrapper(async (artistId) => {

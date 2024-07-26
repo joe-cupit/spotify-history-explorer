@@ -8,7 +8,7 @@ exports.artist = async (req, res) => {
   let resultJson = await dbController.query.getArtistById(id);
 
   const requiredParams = ['name', 'imageURL', 'followers', 'popularity'];
-  if (!resultJson || !requiredParams.every( k => resultJson.hasOwnProperty(k))) {
+  if (!resultJson || !!requiredParams.every( k => resultJson.hasOwnProperty(k))) {
     const spotifyData = await spotifyAccess.getArtist(id);
 
     resultJson = await dbController.modify.addOrUpdateArtist({spotifyId: id}, spotifyData);
@@ -18,6 +18,16 @@ exports.artist = async (req, res) => {
 
   resultJson.topTracks = await dbController.query.getTracksByArtistOrderByListenTime(id, limit=5);
   resultJson.rank = await dbController.query.getArtistRank(id);
+
+  const historyData = await dbController.query.getHistoryByArtist(id);
+  resultJson.firstListenDate = historyData.firstListen.date;
+  resultJson.firstListenTrack = await getTrack(historyData.firstListen.trackId);
+
+  resultJson.mostListen = {
+    date: historyData.mostDate,
+    count: historyData.mostCount,
+    time: historyData.mostTime
+  };
 
   res.send(resultJson);
 }
@@ -29,7 +39,7 @@ exports.album = async (req, res) => {
 
   const requiredParams = ['name', 'artistIds', 'artistNames', 'trackIds',
                           'imageURL', 'albumType', 'totalTracks', 'releaseDate'];
-  if (!resultJson || !requiredParams.every( (k) => resultJson.hasOwnProperty(k) )) {
+  if (!resultJson || !!requiredParams.every( (k) => resultJson.hasOwnProperty(k) )) {
     const spotifyData = await spotifyAccess.getAlbum(id);
 
     resultJson = await dbController.modify.addOrUpdateAlbum({spotifyId: id}, spotifyData);
@@ -44,6 +54,16 @@ exports.album = async (req, res) => {
   }
   resultJson.tracks = tracksData
 
+  const historyData = await dbController.query.getHistoryByAlbum(id);
+  resultJson.firstListenDate = historyData.firstListen.date;
+  resultJson.firstListenTrack = await getTrack(historyData.firstListen.trackId);
+
+  resultJson.mostListen = {
+    date: historyData.mostDate,
+    count: historyData.mostCount,
+    time: historyData.mostTime
+  };
+
   res.send(resultJson);
 }
 
@@ -53,13 +73,24 @@ const getTrack = async function(id) {
 
   const requiredParams = ['name', 'artistIds', 'artistNames', 'albumId',
                           'imageURL', 'duration', 'releaseDate', 'popularity'];
-  if (!resultJson || !requiredParams.every( (k) => resultJson.hasOwnProperty(k) )) {
+  if (!resultJson || !!requiredParams.every( (k) => resultJson.hasOwnProperty(k) )) {
+    console.log('a;skldfjaw;oeih')
     const spotifyData = await spotifyAccess.getTrack(id);
 
     resultJson = await dbController.modify.addOrUpdateTrack({spotifyId: id}, spotifyData);
   }
 
   resultJson = JSON.parse(JSON.stringify(resultJson));
+
+  const historyData = await dbController.query.getHistoryByTrack(id);
+  resultJson.firstListenDate = historyData.firstListen.date;
+
+  resultJson.mostListen = {
+    date: historyData.mostDate,
+    count: historyData.mostCount,
+    time: historyData.mostTime
+  };
+
   return resultJson;
 }
 
@@ -76,7 +107,7 @@ exports.show = async (req, res) => {
   let resultJson = await dbController.query.getShowById(id);
 
   const requiredParams = ['name', 'imageURL', 'totalEpisodes'];
-  if (!resultJson || !requiredParams.every( (k) => resultJson.hasOwnProperty(k) )) {
+  if (!resultJson || !!requiredParams.every( (k) => resultJson.hasOwnProperty(k) )) {
     const spotifyData = await spotifyAccess.getShow(id);
 
     resultJson = await dbController.modify.addOrUpdateShow({spotifyId: id}, spotifyData);
@@ -86,6 +117,16 @@ exports.show = async (req, res) => {
 
   resultJson.topEpisodes = await dbController.query.getEpisodesByShowOrderByListenTime(id, limit=5);
   resultJson.rank = await dbController.query.getShowRank(id);
+
+  const historyData = await dbController.query.getHistoryByShow(id);
+  resultJson.firstListenDate = historyData.firstListen.date;
+  resultJson.firstListenEpisode = await dbController.query.getEpisodeById(historyData.firstListen.trackId);
+
+  resultJson.mostListen = {
+    date: historyData.mostDate,
+    count: historyData.mostCount,
+    time: historyData.mostTime
+  };
 
   res.send(resultJson);
 }

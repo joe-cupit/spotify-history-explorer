@@ -19,9 +19,6 @@ spotifyApi.connectToSpotifyApi();
 app.use('/api', require('./controllers/api/router'));
 
 
-// require('./controllers/database/loading/loadHistory');
-
-
 // Begin server
 app.listen(PORT, () => {
   console.log('[Server] Server started');

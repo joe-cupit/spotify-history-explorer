@@ -26,6 +26,3 @@ loadHistory = async function(dir) {
 }
 
 module.exports = loadHistory;
-
-
-loadHistory('./history.json');

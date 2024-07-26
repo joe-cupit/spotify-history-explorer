@@ -9,11 +9,13 @@ const addTrackToDatabase = async function(trackEntry) {
 
   // add a history entry to the database
   var historyJson = {
-    spotifyId: trackId,
-    name: trackEntry.master_metadata_track_name,
     type: 'track',
 
-    artistName: trackEntry.master_metadata_album_artist_name,
+    spotifyId: trackId,
+    name: trackEntry.master_metadata_track_name,
+    artistIds: [],
+    artistNames: [trackEntry.master_metadata_album_artist_name],
+    albumId: '',
     albumName: trackEntry.master_metadata_album_album_name,
 
     listenedOn: new Date(trackEntry.ts),

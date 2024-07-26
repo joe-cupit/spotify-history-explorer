@@ -9,10 +9,11 @@ const addEpisodeToDatabase = async function(episodeEntry) {
 
   // add a history entry to the database
   var historyJson = {
-    spotifyId: episodeId,
-    name: episodeEntry.episode_name,
     type: 'episode',
 
+    spotifyId: episodeId,
+    name: episodeEntry.episode_name,
+    showId: '',
     showName: episodeEntry.episode_show_name,
 
     listenedOn: new Date(episodeEntry.ts),

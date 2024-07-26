@@ -11,11 +11,14 @@ const historySchema = mongoose.Schema({
   type: types.Required(String),   // either 'track' or 'episode'
 
   // track data
-  artistName: String,
+  artistIds: [String],
+  artistNames: [String],
+  albumId: String,
   albumName: String,
 
   // episode data
   showName: String,
+  showId: String,
 
 
   // historical data

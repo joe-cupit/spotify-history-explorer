@@ -7,6 +7,10 @@
   margin: 0;
   list-style: none;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   width: 100%;
 }
 
@@ -20,8 +24,6 @@
 
   background-color: var(--foreground);
   border-radius: .3rem;
-
-  transition: .2s ease;
 }
 .top-list li.selected-item {
   background-color: var(--border);
@@ -35,49 +37,59 @@
 }
 
 .top-list ul h1 {
-  font-size: 1.75em;
+  font-size: 1.8em;
   font-weight: bold;
 
   display: inline;
   padding: 0;
   margin: 0;
-
-  transition-duration: .1s;
 }
-.top-list ul h2 {
-  font-size: 1.2em;
-  font-weight: normal;
-
+.top-list ul h1:hover {
+  color: var(--primary-light);
+}
+.top-list ul h3 {
   display: inline;
   padding: 0;
   margin: 0;
 
-  transition-duration: .1s;
-}
-.top-list ul a:hover {
+  cursor: default;
+
   color: var(--copy-light);
 }
+.top-list ul h3 a:hover {
+  color: var(--primary);
+}
+
 
 .top-list-image {
-  min-width: 5rem;
-  min-height: 5rem;
-  max-width: 5rem;
-  max-height: 5rem;
+  min-width: 4rem;
+  min-height: 4rem;
+  max-width: 4rem;
+  max-height: 4rem;
 
-  border-radius: .5rem;
+  border-radius: .2rem;
   overflow: hidden;
 
   background-color: var(--background);
+
+  transition: all .4s linear;
 }
 .top-list-image img {
   height: 100%;
   width: 100%;
   object-fit: cover;
-
-  transition: .1s ease;
 }
 .top-list-image img:hover {
   opacity: 0.75;
+}
+
+.top-list-card {
+  width: 100%;
+  transition: background-color .1s ease-out;
+}
+
+.top-list-card:hover {
+  background-color: var(--border);
 }
 
 

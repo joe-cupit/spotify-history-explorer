@@ -22,7 +22,7 @@ export function BasicTopList({ link, type, topList }) {
   }, [rank, link, type])
 
   useEffect(() => {
-    setTimeout(scrollTo, 50);
+    setTimeout(scrollTo, 100);
   }, [type]);
 
   useEffect(() => {
@@ -67,6 +67,7 @@ export function BasicTopList({ link, type, topList }) {
             <ItemCard
               item={item}
               link={link}
+              type={type}
               longestListen={longestListen}
               active={(rank === (index+1))}
 
@@ -95,35 +96,38 @@ export function BasicTopList({ link, type, topList }) {
 }
 
 
-function ItemCard({ item, link, longestListen, active, onClick }) {
+function ItemCard({ item, link, type, longestListen, active, onClick }) {
   
   return (
-    <li className={ active ? "selected-item" : "" }>
+    <li className={ active ? "top-list-card selected-item" : "top-list-card" }>
 
       {item ?
       <>
         <span className="top-list-stats">
+          {type !== 'album' &&
           <Link
             to={`https://open.spotify.com/${link}/${item.spotifyId}`}
             target="_blank">
               <div className="top-list-image">
                 <img loading="lazy" src={item.imageURL} alt={item.name} />
               </div>
-          </Link>
+          </Link>            
+          }
+
 
           <span>
             <Link to={`/${link}/${item.spotifyId}`}>
               <h1 onClick={onClick}>{item.name}</h1>
             </Link>
-            <br/>
+            {['album', 'track'].includes(link) && type === 'overview' &&
+              <h3>&nbsp;•&nbsp;
+                <Link to={`/artist/${item.artistIds?.[0]}`}>
+                  {item.artistNames?.[0]}
+                </Link>
+              </h3>}
+            <br />
 
-            {/* {link === 'track' &&
-            <>
-              by <Link to={`/artist/${item.artists[0]}`}><h2>{item.artists[0]}</h2></Link>
-              <br/>
-            </>} */}
-
-            <span>
+            <span className="top-list-card-extra-stats">
               {item.totalListeningCount} total listen{item.totalListeningCount !== 1 && "s"} ({item.skippedCount} skipped)
             </span>
           </span>

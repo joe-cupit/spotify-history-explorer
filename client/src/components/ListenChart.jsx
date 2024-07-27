@@ -1,4 +1,4 @@
-import "./ListenChart.css"
+import "../styles/components/ListenChart.css"
 
 import { useEffect, useState } from "react";
 import { LineChart } from '@mui/x-charts/LineChart';

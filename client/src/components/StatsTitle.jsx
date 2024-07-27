@@ -1,4 +1,4 @@
-import "./StatsTitle.css";
+import "../styles/components/StatsTitle.css";
 
 import { formatMilliseconds } from "../utils/formatMilliseconds";
 import { Link } from "react-router-dom";

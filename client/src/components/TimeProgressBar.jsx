@@ -1,4 +1,4 @@
-import "./TimeProgressBar.css"
+import "../styles/components/TimeProgressBar.css"
 
 import { formatMilliseconds } from "../utils/formatMilliseconds";
 

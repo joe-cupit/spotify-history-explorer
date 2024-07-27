@@ -1,4 +1,4 @@
-import "./BasicTopList.css"
+import "../styles/components/BasicTopList.css"
 
 import { Link, useSearchParams } from "react-router-dom";
 

@@ -1,4 +1,4 @@
-import "./RankBadge.css";
+import "../styles/components/RankBadge.css";
 
 export function RankBadge({ rank }) {
 

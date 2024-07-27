@@ -1,4 +1,4 @@
-import "./search.css"
+import "../styles/pages/search.css"
 
 import { useSessionStorage } from "../hooks/useSessionStorage";
 import { useSpotifySearch } from "../hooks/useSpotifySearch";

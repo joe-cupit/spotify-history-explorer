@@ -16,7 +16,7 @@ exports.artist = async (req, res) => {
 
   resultJson = JSON.parse(JSON.stringify(resultJson));
 
-  resultJson.topTracks = await dbController.query.getTracksByArtistOrderByListenTime(id, limit=5);
+  resultJson.topTracks = await dbController.query.getTracksByArtistOrderByListenTime(id);
   resultJson.rank = await dbController.query.getArtistRank(id);
 
   const historyData = await dbController.query.getHistoryByArtist(id);
@@ -115,7 +115,7 @@ exports.show = async (req, res) => {
 
   resultJson = JSON.parse(JSON.stringify(resultJson));
 
-  resultJson.topEpisodes = await dbController.query.getEpisodesByShowOrderByListenTime(id, limit=5);
+  resultJson.topEpisodes = await dbController.query.getEpisodesByShowOrderByListenTime(id);
   resultJson.rank = await dbController.query.getShowRank(id);
 
   const historyData = await dbController.query.getHistoryByShow(id);

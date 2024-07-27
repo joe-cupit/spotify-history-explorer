@@ -50,8 +50,8 @@ export function ArtistPage() {
 
       <h1>Top Tracks</h1>
       <BasicTopList
-        type={"track"}
-        limit={5}
+        link={"track"}
+        type={"artist"}
         topList={artistData && artistData.topTracks}
       />
 

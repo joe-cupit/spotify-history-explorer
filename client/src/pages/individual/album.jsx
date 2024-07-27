@@ -49,8 +49,8 @@ export function AlbumPage() {
       </span>
 
       <BasicTopList
-        type={"track"}
-        limit={albumData ? albumData.totalTracks : 5}
+        link={"track"}
+        type={"album"}
         topList={albumData && albumData.tracks}
       />
     </>

@@ -50,8 +50,8 @@ export function ShowPage() {
 
       <h1>Top Episodes</h1>
       <BasicTopList
-        type={"episode"}
-        limit={5}
+        link={"episode"}
+        type={"show"}
         topList={showData && showData.topEpisodes}
       />
 

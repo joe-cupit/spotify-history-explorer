@@ -30,29 +30,37 @@ export function TrackPage() {
         artistNames={trackData?.artistNames}
       />
 
-      <h1>{formatMilliseconds(trackData?.totalListeningTime)}</h1>
+      {trackData?.totalListeningTime > 0
+      ? <>
+        <h1>{formatMilliseconds(trackData?.totalListeningTime)}</h1>
 
-      <h3 style={{marginBottom: '5px'}}>First listened on:</h3>
-      <span>
-        {trackData &&
-          <>
-            <b>{new Date(trackData.firstListenDate).toLocaleDateString()}</b> at <b>{new Date(trackData.firstListenDate).toLocaleTimeString()}</b>
-          </>
-        }
-      </span>
+        <h3 style={{marginBottom: '5px'}}>First listened on:</h3>
+        <span>
+          {trackData &&
+            <>
+              <b>{new Date(trackData.firstListenDate).toLocaleDateString()}</b> at <b>{new Date(trackData.firstListenDate).toLocaleTimeString()}</b>
+            </>
+          }
+        </span>
 
-      <h3 style={{marginBottom: '5px'}}>Most listened on:</h3>
-      <span>
-        {trackData &&
-          <>
-            <b>{new Date(trackData.mostListen.date).toLocaleDateString()}</b> when you listened <b>{trackData.mostListen.count}</b> times for <b>{formatMilliseconds(trackData.mostListen.time)}</b>
-          </>
-        }
-      </span>
+        <h3 style={{marginBottom: '5px'}}>Most listened on:</h3>
+        <span>
+          {trackData &&
+            <>
+              <b>{new Date(trackData.mostListen.date).toLocaleDateString()}</b> when you listened <b>{trackData.mostListen.count}</b> times for <b>{formatMilliseconds(trackData.mostListen.time)}</b>
+            </>
+          }
+        </span>
 
-      {trackData && 
-        <ListenChart id={trackData?.spotifyId} maxlen={trackData?.duration} />
+        {trackData && 
+          <ListenChart id={trackData?.spotifyId} maxlen={trackData?.duration} />
+        }        
+        </>
+      : <>
+        <h1>You've never listened to this track.</h1>
+        </>
       }
+
       
     </>
   )

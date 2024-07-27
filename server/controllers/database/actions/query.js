@@ -32,7 +32,7 @@ getOrderByTimeListened = tryCatchWrapper(async (Model, limit) => {
   console.log(`[MongoDB] Getting top ${Model.collection.collectionName}`);
   var result = null;
   if (limit) {
-    result = await Model.find({})
+    result = await Model.find({ totalListeningTime: { $gt: '0' } })
                         .sort({ totalListeningTime: -1 })
                         .limit(limit);
   }
@@ -109,10 +109,12 @@ getHistoryByIds = tryCatchWrapper(async (type, id) => {
     }
   }
 
-  mostDate = Object.keys(trackHistoryByDay).reduce((a, b) => trackHistoryByDay[a].time > trackHistoryByDay[b].time ? a : b);
-  historyData.mostTime = trackHistoryByDay[mostDate].time;
-  historyData.mostCount = trackHistoryByDay[mostDate].count;
-  historyData.mostDate = mostDate;
+  if (Object.keys(trackHistoryByDay).length > 0) {
+    mostDate = Object.keys(trackHistoryByDay).reduce((a, b) => trackHistoryByDay[a].time > trackHistoryByDay[b].time ? a : b);
+    historyData.mostTime = trackHistoryByDay[mostDate].time;
+    historyData.mostCount = trackHistoryByDay[mostDate].count;
+    historyData.mostDate = mostDate;
+  }
 
   return historyData;
 })

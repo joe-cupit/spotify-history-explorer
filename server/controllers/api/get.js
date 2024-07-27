@@ -12,22 +12,26 @@ exports.artist = async (req, res) => {
     const spotifyData = await spotifyAccess.getArtist(id);
 
     resultJson = await dbController.modify.addOrUpdateArtist({spotifyId: id}, spotifyData);
+    resultJson = JSON.parse(JSON.stringify(resultJson));
   }
+  else {
+    resultJson = JSON.parse(JSON.stringify(resultJson));
 
-  resultJson = JSON.parse(JSON.stringify(resultJson));
-
-  resultJson.topTracks = await dbController.query.getTracksByArtistOrderByListenTime(id);
-  resultJson.rank = await dbController.query.getArtistRank(id);
-
-  const historyData = await dbController.query.getHistoryByArtist(id);
-  resultJson.firstListenDate = historyData.firstListen.date;
-  resultJson.firstListenTrack = await getTrack(historyData.firstListen.trackId);
-
-  resultJson.mostListen = {
-    date: historyData.mostDate,
-    count: historyData.mostCount,
-    time: historyData.mostTime
-  };
+    resultJson.topTracks = await dbController.query.getTracksByArtistOrderByListenTime(id);
+    resultJson.rank = await dbController.query.getArtistRank(id);
+  
+    const historyData = await dbController.query.getHistoryByArtist(id);
+    resultJson.firstListenDate = historyData?.firstListen?.date;
+    if (historyData?.firstListen?.trackId) {
+      resultJson.firstListenTrack = await getTrack(historyData?.firstListen?.trackId);
+    }
+  
+    resultJson.mostListen = {
+      date: historyData?.mostDate,
+      count: historyData?.mostCount,
+      time: historyData?.mostTime
+    };
+  }
 
   res.send(resultJson);
 }
@@ -43,26 +47,30 @@ exports.album = async (req, res) => {
     const spotifyData = await spotifyAccess.getAlbum(id);
 
     resultJson = await dbController.modify.addOrUpdateAlbum({spotifyId: id}, spotifyData);
+    resultJson = JSON.parse(JSON.stringify(resultJson));
   }
+  else {
+    resultJson = JSON.parse(JSON.stringify(resultJson));
 
-  resultJson = JSON.parse(JSON.stringify(resultJson));
+    let tracksData = [];
+    for (let trackId of resultJson.trackIds) {
+      var trackData = await getTrack(trackId);
+      tracksData.push(trackData);
+    }
+    resultJson.tracks = tracksData
 
-  let tracksData = [];
-  for (let trackId of resultJson.trackIds) {
-    var trackData = await getTrack(trackId);
-    tracksData.push(trackData);
+    const historyData = await dbController.query.getHistoryByAlbum(id);
+    resultJson.firstListenDate = historyData?.firstListen?.date;
+    if (historyData?.firstListen?.trackId) {
+      resultJson.firstListenTrack = await getTrack(historyData?.firstListen?.trackId);
+    }
+
+    resultJson.mostListen = {
+      date: historyData?.mostDate,
+      count: historyData?.mostCount,
+      time: historyData?.mostTime
+    };
   }
-  resultJson.tracks = tracksData
-
-  const historyData = await dbController.query.getHistoryByAlbum(id);
-  resultJson.firstListenDate = historyData.firstListen.date;
-  resultJson.firstListenTrack = await getTrack(historyData.firstListen.trackId);
-
-  resultJson.mostListen = {
-    date: historyData.mostDate,
-    count: historyData.mostCount,
-    time: historyData.mostTime
-  };
 
   res.send(resultJson);
 }
@@ -74,22 +82,23 @@ const getTrack = async function(id) {
   const requiredParams = ['name', 'artistIds', 'artistNames', 'albumId',
                           'imageURL', 'duration', 'releaseDate', 'popularity'];
   if (!resultJson || !!requiredParams.every( (k) => resultJson.hasOwnProperty(k) )) {
-    console.log('a;skldfjaw;oeih')
     const spotifyData = await spotifyAccess.getTrack(id);
 
     resultJson = await dbController.modify.addOrUpdateTrack({spotifyId: id}, spotifyData);
+    resultJson = JSON.parse(JSON.stringify(resultJson));
   }
+  else {
+    resultJson = JSON.parse(JSON.stringify(resultJson));
 
-  resultJson = JSON.parse(JSON.stringify(resultJson));
+    const historyData = await dbController.query.getHistoryByTrack(id);
+    resultJson.firstListenDate = historyData?.firstListen?.date;
 
-  const historyData = await dbController.query.getHistoryByTrack(id);
-  resultJson.firstListenDate = historyData.firstListen.date;
-
-  resultJson.mostListen = {
-    date: historyData.mostDate,
-    count: historyData.mostCount,
-    time: historyData.mostTime
-  };
+    resultJson.mostListen = {
+      date: historyData?.mostDate,
+      count: historyData?.mostCount,
+      time: historyData?.mostTime
+    };    
+  }
 
   return resultJson;
 }
@@ -112,21 +121,22 @@ exports.show = async (req, res) => {
 
     resultJson = await dbController.modify.addOrUpdateShow({spotifyId: id}, spotifyData);
   }
+  else {
+    resultJson = JSON.parse(JSON.stringify(resultJson));
 
-  resultJson = JSON.parse(JSON.stringify(resultJson));
-
-  resultJson.topEpisodes = await dbController.query.getEpisodesByShowOrderByListenTime(id);
-  resultJson.rank = await dbController.query.getShowRank(id);
-
-  const historyData = await dbController.query.getHistoryByShow(id);
-  resultJson.firstListenDate = historyData.firstListen.date;
-  resultJson.firstListenEpisode = await dbController.query.getEpisodeById(historyData.firstListen.trackId);
-
-  resultJson.mostListen = {
-    date: historyData.mostDate,
-    count: historyData.mostCount,
-    time: historyData.mostTime
-  };
+    resultJson.topEpisodes = await dbController.query.getEpisodesByShowOrderByListenTime(id);
+    resultJson.rank = await dbController.query.getShowRank(id);
+  
+    const historyData = await dbController.query.getHistoryByShow(id);
+    resultJson.firstListenDate = historyData?.firstListen?.date;
+    resultJson.firstListenEpisode = await dbController.query.getEpisodeById(historyData?.firstListen?.trackId);
+  
+    resultJson.mostListen = {
+      date: historyData?.mostDate,
+      count: historyData?.mostCount,
+      time: historyData?.mostTime
+    };
+  }
 
   res.send(resultJson);
 }

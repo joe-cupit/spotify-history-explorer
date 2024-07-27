@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 
 import { TimeProgressBar } from "./TimeProgressBar";
 
+import spotifyLogo from "../assets/spotifyLogo.png"
+
 
 export function BasicTopList({ link, type, topList }) {
 
@@ -107,7 +109,9 @@ function ItemCard({ item, link, type, longestListen, active, onClick }) {
           {type !== 'album' &&
           <Link
             to={`https://open.spotify.com/${link}/${item.spotifyId}`}
-            target="_blank">
+            target="_blank"
+            className="top-list-image-link">
+              <img className="spotify-logo-img" loading="lazy" src={spotifyLogo} alt='Spotify Logo' />
               <div className="top-list-image">
                 <img loading="lazy" src={item.imageURL} alt={item.name} />
               </div>
@@ -120,14 +124,18 @@ function ItemCard({ item, link, type, longestListen, active, onClick }) {
               <h1 onClick={onClick}>{item.name}</h1>
             </Link>
             {['album', 'track'].includes(link) && type === 'overview' &&
-              <h3>&nbsp;•&nbsp;
+            <>
+              <span className="top-list-to-hide">&nbsp;•&nbsp;</span>
+              <h3>
                 <Link to={`/artist/${item.artistIds?.[0]}`}>
                   {item.artistNames?.[0]}
                 </Link>
-              </h3>}
-            <br />
+              </h3>
+            </>
+              }
+            <br className="top-list-to-hide"/>
 
-            <span className="top-list-card-extra-stats">
+            <span className="top-list-card-extra-stats top-list-to-hide">
               {item.totalListeningCount} total listen{item.totalListeningCount !== 1 && "s"} ({item.skippedCount} skipped)
             </span>
           </span>

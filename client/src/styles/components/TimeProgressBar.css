@@ -1,3 +1,11 @@
+@keyframes load-progress {
+  from {
+    width: 0%;
+  }
+  to { 
+    width: 100%
+  }
+}
 
 .time-progress-bar {
   display: inline-flex;
@@ -7,9 +15,10 @@
   min-width: 12rem;
   padding: .4rem 1rem;
 
-  background-color: var(--background);
-  border: solid var(--border) .1rem;
+  background-color: var(--background-dark);
+  border: solid var(--border-dark) .1rem;
   border-radius: .3rem;
+  overflow: hidden;
 
   cursor: default;
 }
@@ -20,11 +29,16 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--copy);
+}
+.time-progress-background div {
+  width: 100%;
+  height: 100%;
+  background-color: var(--copy-dark);
+  animation: load-progress .7s ease forwards;
 }
 
 .time-progress-text {
-  color: var(--copy);
+  color: var(--copy-dark);
   mix-blend-mode: difference;
 }
 

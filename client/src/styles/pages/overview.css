@@ -3,7 +3,7 @@
   justify-content: space-between;
   gap: 5rem;
 
-  width: min(50rem, 80%);
+  width: min(90%, 50rem);
 }
 
 

@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 
 // components
 import { Navbar } from "./components/Navbar";
+import { Footer } from "./components/Footer";
 
 // pages
 import { HomePage } from "./pages/home";
@@ -44,7 +45,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
-
+      <Footer />
     </>
   )
 }

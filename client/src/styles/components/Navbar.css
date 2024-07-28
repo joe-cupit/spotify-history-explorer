@@ -72,13 +72,66 @@
   margin: auto 5px;
   padding: 2px;
 
-  background-color: var(--copy);
+  position: relative;
+  background-color: var(--foreground);
   border-radius: .4rem;
+
+  overflow: hidden;
+
+  color: var(--copy);
+  cursor: pointer;
+  user-select: none;
+
+  transition: all .2s ease;
+}
+.light-dark-button:hover {
+  background-color: var(--copy);
+  color: var(--foreground);
 }
 .light-dark-button svg {
-  color: var(--background);
-  cursor: pointer;
+  display: block;
+  transition: all .4s ease;
 }
+
+.light-dark-button:hover svg {
+  transform: translateY(-100%);
+}
+
+body.light-mode div.light-dark-button svg {
+  transform: translateY(-100%);
+}
+body.light-mode div.light-dark-button:hover svg {
+  transform: translateY(0%);
+}
+
+/* .light-dark-button:hover::after {
+  content: 'Switch theme';
+  position: absolute;
+  top: 120%;
+  right: -40%;
+
+  white-space: nowrap;
+
+  background-color: var(--copy);
+  color: var(--foreground);
+
+  border-radius: .2rem;
+  padding: .2rem;
+
+  font-size: .9rem;
+
+  animation: fade-in .3s ease .1s both;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    height: 0;
+  }
+  to {
+    opacity: 1;
+    height: 60%;
+  }
+} */
 
 
 .nav-right {

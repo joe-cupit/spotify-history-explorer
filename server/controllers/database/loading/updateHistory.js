@@ -11,18 +11,22 @@ updateHistory = async function() {
       if (!entry.artistIds || entry.artistIds.length === 0
           || !entry.albumId || entry.albumId === '') {
         const track = await getTrackById(id);
-        entry.name = track.name;
-        entry.artistIds = track.artistIds;
-        entry.artistNames = track.artistNames;
-        entry.albumId = track.albumId;
-        entry.albumName = track.albumName;        
+        if (track) {
+          entry.name = track.name;
+          entry.artistIds = track.artistIds;
+          entry.artistNames = track.artistNames;
+          entry.albumId = track.albumId;
+          entry.albumName = track.albumName;
+        }
       }
     } else if (type === 'episode') {
       if (!entry.showId || entry.showId === '') {
         const episode = await getEpisodeById(id);
-        entry.name = episode.name;
-        entry.showId = episode.showId;
-        entry.showName = episode.showName;
+        if (episode) {
+          entry.name = episode.name;
+          entry.showId = episode.showId;
+          entry.showName = episode.showName;          
+        }
       }
     }
 

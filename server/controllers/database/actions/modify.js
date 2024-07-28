@@ -55,3 +55,9 @@ exports.addHistoryEntry = async function(historyJson) {
 
   return isNewEntry;
 }
+
+exports.removeHistoryEntry = async function(historyJson) {
+  History.find(historyJson).then(entry => {
+    entry.remove();
+  })
+}

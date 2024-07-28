@@ -55,6 +55,12 @@ const addTrackToDatabase = async function(trackEntry) {
   else {
     const spotifyTrackData = await spotifyAccess.getTrackExtended(trackId);
 
+    if (!spotifyTrackData) {
+      console.log('[MongoDB] Removing from history');
+      await dbModify.removeHistoryEntry(historyJson);
+      return;
+    }
+
     for (let artistData of spotifyTrackData.artistData) {
       artistJson = {
         spotifyId: artistData.id,
